@@ -1,0 +1,143 @@
+/**选择器**/
+.Chooser {
+  font-size: 14px;
+}
+
+/*.Chooser .ci{font-family: 'microsoft yahei';font-size: 13px;padding: 3px;width: 90%;}*/
+.la {
+  width: 500px;
+  background: white;
+  z-index: 3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: solid 1px #6781a1;
+  text-align: left;
+}
+
+.la .sitem {
+  height: 30px;
+  line-height: 30px;
+  padding: 5px;
+  padding-left: 5px;
+  font-size: 13px;
+  font-family: 'microsoft yahei';
+  color: #000;
+  background: #d8d8d8;
+}
+
+.la .sitem span {
+  line-height: 30px;
+}
+
+.la .nitem {
+  padding: 5px;
+  padding-left: 5px;
+  font-size: 13px;
+  font-family: 'microsoft yahei';
+  color: #000;
+  background: #fafafa;
+}
+
+.la .sitem:hover {
+  cursor: pointer;
+  background: #164C90;
+  color: #fff;
+}
+
+.la .nitem:hover {
+  cursor: pointer;
+  background: #164C90;
+  color: #fff;
+}
+
+/*单个人员选择器*/
+.Chooser .si {
+  position: relative;
+  width: 100%;
+  height: 28px;
+  border: solid 1px #ddd;
+}
+
+.Chooser .si .sn {
+  min-width: 130px;
+  display: inline-block;
+  height: 23px;
+  border: solid 1px #ddd;
+  margin: 2px 3px;
+  background: #fff;
+  border-radius: 3px;
+  text-align: center;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  z-index: 100;
+}
+
+.Chooser .si .sn .ti {
+  min-width: 100px;
+  border: none;
+  padding: 2px;
+  line-height: 16px;
+  font-family: microsoft yahei;
+  font-size: 15px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.Chooser .si .sn .ti .t {
+  line-height: 15px;
+  margin-left: 3px;
+}
+
+.Chooser .si .sn .c {
+  float: right;
+  height: 20px;
+  margin-right: 3px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.Chooser .si .sn .c:hover {
+  cursor: pointer;
+}
+
+.achooser {
+  font-size: 14px;
+}
+
+/*.Chooser .ci{font-family: 'microsoft yahei';font-size: 13px;padding: 3px;width: 90%;}*/
+.achooser .la {
+  width: 500px;
+  background: #f2f2f2;
+  z-index: 3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: solid 1px #6781a1;
+  text-align: left;
+}
+
+.achooser .lct {
+  height: 40px;
+  background: #fff;
+}
+
+.achooser .lct .t {
+  line-height: 40px;
+  margin-left: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.cooSel {
+  margin-bottom:0;
+  height: 26px;
+  width: 70%;
+  padding:7px;
+  border:solid 1px #999;
+}
+.cooSel span{
+  margin-left:5px;
+  line-height:26px;
+}
