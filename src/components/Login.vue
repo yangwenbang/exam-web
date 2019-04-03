@@ -87,31 +87,25 @@ export default {
     this.enter();
   },
   watch: {
-    phone(val) {
-      if (val) {
-        this.isShowHint = false;
-      } else {
-        this.isShowHint = true;
-      }
-    },
-    upassword(val) {
-      if (val) {
-        this.isShowHint = false;
-      } else {
-        this.isShowHint = true;
-      }
+    login: {
+      handler(curVal) {
+        this.phone = curVal.phone;
+        this.upassword = curVal.upassword;
+      },
+      deep: true
     }
   },
   methods: {
     enter() {
-      var lett = this;
+      var that = this;
       document.onkeydown = function() {
         var key = window.event.keyCode;
         if (key === 13) {
-          lett.loginbtn();
+          that.loginbtn();
         }
       };
     },
+
     loginbtn() {
       let that = this;
       var param = that.Vcode;
@@ -142,10 +136,10 @@ export default {
         }
       });
     },
+
     checkLogin() {
       var that = this;
       axios.post(api.api.user.checkLogin).then(response => {
-        
         var rdata = response.data;
         if (rdata.code == 0) {
           sessionStorage.setItem("info", JSON.stringify(rdata.user));
