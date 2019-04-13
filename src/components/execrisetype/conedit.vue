@@ -48,19 +48,52 @@
                 </el-select>
               </div>
             </div>
-            <div class="i">
-              <div class="tl">
-                <span>可选项：</span>
+            <div v-if="exerciseContent.exerciseTypeId!=optionc">
+              <div class="i">
+                <div class="tl">
+                  <span>答案选项类型：</span>
+                </div>
+                <div class="tr">
+                  <el-select
+                    el="select"
+                    v-model="optiontype"
+                    @change="changeOptionType"
+                    clearable
+                    placeholder="请选择答案选项类型"
+                  >
+                    <el-option
+                      v-for="item in optiontypes"
+                      :key="item.id"
+                      :label="item.label"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </div>
               </div>
-              <div class="tr">
-                <input
-                  class="add-input"
-                  type="text"
-                  placeholder="请输入可选项"
-                  v-model="exerciseContent.optionss"
-                >
+
+              <div class="i" v-show="optiontype==0">
+                <div class="tl">
+                  <span>可选项：</span>
+                </div>
+                <div class="tr">
+                  <input
+                    class="add-input"
+                    type="text"
+                    placeholder="请输入可选项"
+                    v-model="exerciseContent.optionss"
+                  >
+                </div>
+              </div>
+              <div class="i" style="height: 100px;" v-show="optiontype==1">
+                <div class="tl">
+                  <span>答案选项图片：</span>
+                </div>
+                <div class="tr">
+                  <imgupload :imgPath="exerciseContent.optionss" v-on:change="setOptionImg"></imgupload>
+                </div>
               </div>
             </div>
+            <div style="clear:both"></div>
             <div class="i">
               <div class="tl">
                 <span>正确答案：</span>
@@ -110,21 +143,22 @@
             <div style="clear:both;"></div>
             <div class="i" style="height: 100px;">
               <div class="tl">
-                <span>题目图片：</span>
+                <span>题目中图片：</span>
               </div>
               <div class="tr">
-                <fileUpload :imgPath="exerciseContent.exerciseContentPicture" v-on:change="setImg"></fileUpload>
+                <imgupload :imgPath="exerciseContent.exerciseContentPicture" v-on:change="setImg"></imgupload>
               </div>
             </div>
+
             <div class="i" style="height: 100px;">
               <div class="tl">
                 <span>答案解析图片：</span>
               </div>
               <div class="tr">
-                <fileUpload
+                <imgupload
                   :imgPath="exerciseContent.exerciseAnswerPicture"
                   v-on:change="setImgAnswer"
-                ></fileUpload>
+                ></imgupload>
               </div>
             </div>
             <div style="clear:both;"></div>
@@ -140,32 +174,51 @@
 <script>
 import axios from "axios";
 import api from "../../config/apiConfig";
-import fileUpload from "@/components/child-components/upload-components/webupload";
+import imgupload from "@/components/child-components/imgupload";
 
 export default {
   name: "ExecriseContentEdit",
   components: {
-    fileUpload
+    imgupload
   },
   data() {
     return {
+      backurl: "",
       exerciseContent: {},
+      optiontypes: [{ id: 0, label: "文字选项" }, { id: 1, label: "图片选项" }],
+      optiontype: 0,
       typeAllList: [],
       contentpics: [],
-      answerpics: []
+      answerpics: [],
+      optionpics: [],
+      optionssBack: "",
+      optionc: 0
     };
   },
   created() {
+    this.getBackurl();
     this.getTypes();
     this.getContent();
   },
   methods: {
+    getBackurl() {
+      var url = window.location.href;
+      var urlindex = url.indexOf("#url");
+      if (urlindex > 0) {
+        this.backurl = url.substring(urlindex + 5, url.length);
+      }
+    },
     getTypes() {
       var that = this;
       axios.post(api.api.execrisetype.listall).then(response => {
         var rdata = response.data;
         if (rdata.code == 0) {
           that.typeAllList = rdata.list;
+          that.typeAllList.forEach(item => {
+            if (item.exerciseName == "问答题") {
+              that.optionc = item.id;
+            }
+          });
         }
       });
     },
@@ -177,6 +230,12 @@ export default {
           var rdata = response.data;
           if (rdata.code == 0) {
             that.exerciseContent = rdata.exerciseContent;
+            if (that.exerciseContent.optionss.indexOf("JX-IMG-") > -1) {
+              that.optiontype = 1;
+              that.optionssBack = that.exerciseContent.optionss;
+            } else {
+              that.optiontype = 0;
+            }
           }
         });
       }
@@ -184,17 +243,64 @@ export default {
     goback() {
       window.history.go(-1);
     },
-    setImg(url) {
-      this.exerciseContent.exerciseContentPicture = url;
+    setImg(datas) {
+      this.contentpics = datas;
+      console.log(datas);
     },
-    setImgAnswer(url) {
-      this.exerciseContent.exerciseAnswerPicture = url;
+    setImgAnswer(datas) {
+      this.answerpics = datas;
+    },
+    setOptionImg(datas) {
+      var that = this;
+      this.optionpics = datas;
+      if (that.optionpics.length > 0) {
+        this.exerciseContent.optionss = "";
+        that.optionpics.forEach(item => {
+          if (item.urlPath.length > 0) {
+            var path = "JX-IMG-" + item.urlPath + ";";
+            that.optionssBack = that.exerciseContent.optionssBack + path;
+          }
+        });
+      }
+    },
+    changeOptionType() {
+      var that = this;
+      if (that.optiontype == 0) {
+        that.exerciseContent.optionss = "";
+      } else if (that.optiontype == 1) {
+        that.exerciseContent.optionss = that.optionssBack;
+      }
     },
     save() {
       var that = this;
-      var param = that.exerciseContent;
-      param.createDate = null;
-      param.updateTime = null;
+      var param = util.clone(that.exerciseContent);
+      if (that.contentpics.length > 0) {
+        param.exerciseContentPicture = "";
+        that.contentpics.forEach(item => {
+          if (item.urlPath.length > 0) {
+            var path = item.urlPath + ";";
+            param.exerciseContentPicture = param.exerciseContentPicture + path;
+          }
+        });
+      }
+      if (that.answerpics.length > 0) {
+        param.exerciseAnswerPicture = "";
+        that.answerpics.forEach(item => {
+          if (item.urlPath.length > 0) {
+            var path = item.urlPath + ";";
+            param.exerciseAnswerPicture = param.exerciseAnswerPicture + path;
+          }
+        });
+      }
+      if (that.optionpics.length > 0) {
+        param.optionss = "";
+        that.optionpics.forEach(item => {
+          if (item.urlPath.length > 0) {
+            var path = "JX-IMG-" + item.urlPath + ";";
+            param.optionss = param.optionss + path;
+          }
+        });
+      }
       param.sectionId = this.$route.params.sectionId;
       axios.post(api.api.execrisetype.consave, param).then(response => {
         that.loading = false;
@@ -238,5 +344,10 @@ export default {
 .panel .not {
   background-color: rgba(49, 195, 166, 0.5);
   cursor: not-allowed;
+}
+@media screen and (max-width: 1400px) {
+  .panel .p-c .i .tr .itext {
+    width: 600px;
+  }
 }
 </style>

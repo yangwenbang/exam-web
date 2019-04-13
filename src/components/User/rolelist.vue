@@ -127,7 +127,7 @@
               <input class="add-input" type="text" placeholder="请输入课章排序" v-model="chapter.seq">
             </div>
           </div>
-          <div class="i" style="text-align: center;">
+          <div class="pf">
             <button class="btn" @click="save">保存</button>
           </div>
         </div>

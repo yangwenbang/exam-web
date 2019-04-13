@@ -4,6 +4,8 @@ input {
     outline: none;
 }
 
+.s-sw {}
+
 .comTb {
     width: 100%;
     text-align: center;
@@ -140,7 +142,7 @@ input {
 }
 
 .panel .p-c {
-    margin: 20px;
+    margin-top: 10px;
     font-size: 16px;
     border-top: 0;
 }
@@ -173,10 +175,28 @@ input {
     cursor: pointer;
 }
 
+.panel .p-c .calbtn {
+    margin-top: 10px;
+    width: 80px;
+    height: 35px;
+    border: 0;
+    border-radius: 3px;
+    font-size: 16px;
+    color: #000;
+    background-color: #fff;
+    border: solid 1px #dddddd;
+    outline: none;
+    cursor: pointer;
+}
+
 .panel .pf {
+    margin-top: 30px;
     text-align: center;
-    width: 100%;
     height: 60px;
+    padding: 0 20px;
+    background-color: #f2f2f2;
+    line-height: 60px;
+    border-top: solid 1px #e4e4e4;
 }
 
 .panel .pf .btn {
@@ -359,7 +379,7 @@ input {
 }
 
 .panel .p-c .i .tr .sel {
-    width: 799px;
+    width: 899px;
     border: solid 1px #aaa;
     height: 38px;
     cursor: pointer;
@@ -396,7 +416,7 @@ input {
 }
 
 .panel .p-c .i .tr .kd {
-    width: 896px;
+    width: 400px;
 }
 
 .panel .p-c .i .tr input::-webkit-input-placeholder {
@@ -437,6 +457,19 @@ input {
 .panel .p-c .i .tr input#input-channel:-ms-input-placeholder {
     /* Internet Explorer 10-11 */
     color: #aaa;
+}
+
+.fphone {
+    width: 50%;
+    float: left;
+}
+
+.fphone .i .tr [el="select"] input {
+    width: 496px !important;
+}
+
+.fphone .i .tr input.add-input {
+    width: 483px !important;
 }
 
 @media screen and (max-width: 1450px) {
@@ -795,7 +828,14 @@ div.content {
     text-decoration: underline;
 }
 
+button {
+    outline: none;
+}
+
 @media screen and (max-width: 1400px) {
+    .s-sw {
+        display: none;
+    }
     .lpc {
         max-width: 150px;
     }
@@ -804,16 +844,33 @@ div.content {
         height: 80px;
     }
     .panel .p-c .btn {
-        width: 60px;
-        height: 30px;
-        font-size: 12px;
+        width: 80px;
+        height: 32px;
+        font-size: 13px;
     }
     .pi-c .pi {
         width: 60px;
         height: 30px;
     }
+    .panel .p-c {
+        margin: 0px;
+        font-size: 14px;
+        border-top: 0;
+    }
+    .panel .pf {
+        margin-top: 20px;
+        height: 54px;
+        border-top: solid 1px #ddd;
+        background: #f2f2f2;
+    }
     .panel .p-c .i2 .tl {
         font-size: 12px;
+    }
+    .panel .p-t .name {
+        font-size: 12px;
+    }
+    .panel .p-c .i .tr .sel {
+        width: 613px;
     }
     .fcl .fci .ct {
         font-size: 12px;
@@ -829,14 +886,47 @@ div.content {
         height: 36px;
         font-size: 12px;
     }
+    .head-c {
+        height: 40px;
+    }
     .head-c .bread-item {
+        line-height: 40px;
         font-size: 11px;
+    }
+    .head-c .cb {
+        margin-top: 4px;
+        height: 32px;
+        font-size: 12px;
     }
     .panel .p-c .i .tr [el="select"] input {
         width: 615px;
     }
     .panel .p-c .i .tr .kd {
-        width: 615px;
+        width: 496px;
+    }
+    .panel .pf .btn {
+        height: 32px;
+        font-size: 14px;
+    }
+    .fphone {
+        width: 100%;
+    }
+    .tools .t-r span {
+        font-size: 12px;
+        border-radius: 2px;
+        line-height: 15px;
+    }
+    .comTb th {
+        font-size: 13px;
+    }
+    .comTb td {
+        font-size: 12px;
+    }
+    .cfile {
+        margin-bottom: 10px;
+    }
+    .panel .p-c .calbtn {
+        font-size: 13px;
     }
 }
 

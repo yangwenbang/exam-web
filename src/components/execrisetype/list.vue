@@ -39,7 +39,7 @@
                     </el-select>
                   </div>
                 </div>
-              </div> -->
+              </div>-->
               <div class="fh">
                 <div class="fcl">
                   <div class="fci">
@@ -92,7 +92,7 @@
                 <th>题型</th>
                 <!-- <th>
                   <div class="ll">题型模板</div>
-                </th> -->
+                </th>-->
                 <th>
                   <div class="ll">题型说明</div>
                 </th>
@@ -106,18 +106,22 @@
                 <td>
                   <div class="ll">{{item.exerciseName}}</div>
                 </td>
-                <td>  
+                <td>
                   <span v-for="xitem in typeOptions" :key="xitem.id">
                     <span v-if="xitem.id==item.exerciseType">{{xitem.label}}</span>
                   </span>
-                <!-- <td>
+                  <!-- <td>
                   <div class="ll">{{item.exerciseModel}}</div>
-                </td> -->
+                  </td>-->
+                </td>
                 <td>
                   <div class="ll">{{item.description}}</div>
                 </td>
                 <td>
-                  <div class="ll">{{item.remark}}</div>
+                  <div class="ll">
+                    <span v-if="item.remark">{{item.remark}}</span>
+                    <span v-else>无</span>
+                  </div>
                 </td>
                 <td>
                   <div>{{item.seq}}</div>
@@ -205,7 +209,7 @@
                 ></el-option>
               </el-select>
             </div>
-          </div> -->
+          </div>-->
           <div class="i">
             <div class="tl">
               <span>排序：</span>
@@ -222,7 +226,7 @@
               <input class="add-input" type="text" placeholder="请输入备注" v-model="type.remark">
             </div>
           </div>
-          <div class="i" style="text-align: center;">
+          <div class="pf">
             <button class="btn" @click="save">保存</button>
           </div>
         </div>
@@ -249,7 +253,7 @@
               <th>题型</th>
               <!-- <th>
                 <div class="ll">题型模板</div>
-              </th> -->
+              </th>-->
               <th>
                 <div class="ll">题型说明</div>
               </th>
@@ -267,7 +271,7 @@
               <td>{{item.exerciseTypeName}}</td>
               <!-- <td>
                 <div class="ll">{{item.exerciseModelName}}</div>
-              </td> -->
+              </td>-->
               <td>
                 <div class="ll">{{item.description}}</div>
               </td>
@@ -427,7 +431,7 @@ export default {
       param.updateTime = null;
       axios.post(api.api.execrisetype.save, param).then(response => {
         that.loading = false;
-        
+
         var rdata = response.data;
         if (rdata.code == 0) {
           this.$message({
@@ -444,7 +448,6 @@ export default {
     delData() {
       var param = this.type;
       axios.post(api.api.execrisetype.delete, param).then(response => {
-        
         var rdata = response.data;
         if (rdata.code == 0) {
           this.$message({
@@ -466,7 +469,6 @@ export default {
       var that = this;
       var param = item;
       axios.post(api.api.execrisetype.info, param).then(response => {
-        
         var rdata = response.data;
         if (rdata.code == 0) {
           that.type = rdata.exerciseType;
@@ -556,7 +558,6 @@ export default {
       var that = this;
       var param = that.importTypes;
       axios.post(api.api.execrisetype.patchsave, param).then(response => {
-        
         var rdata = response.data;
         if (rdata.code == 0) {
           this.$message({

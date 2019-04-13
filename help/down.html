@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>继续教育一考通</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="main.js"></script>
+    <script src="common.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+        $(function () {
+            console.log(util.browser);
+            console.log(" 是否为移动终端: " + util.browser.versions.mobile + " ios终端: "
+                + util.browser.versions.ios + " android终端: "
+                + util.browser.versions.android);
+            var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+            if (util.browser.versions.android) {
+                window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.jxjs.ykt";
+            } else if (util.browser.versions.ios) {
+                window.location.href = "https://itunes.apple.com/cn/app/id1458248896?mt=8";
+            } else {
+                window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.jxjs.ykt";
+            }
+        })
+    </script>
+</body>
+</html>

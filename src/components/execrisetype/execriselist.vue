@@ -66,9 +66,6 @@
                   <div class="ll">题型名称</div>
                 </th>
                 <th>
-                  <div>题目图片</div>
-                </th>
-                <th>
                   <div class="ll">候选项</div>
                 </th>
                 <th>
@@ -87,13 +84,14 @@
                   <div class="ll">{{item.exerciseName}}</div>
                 </td>
                 <td>
-                  <div v-if="item.exerciseContentPicture" class="pi-c">
-                    <img :src="item.exerciseContentPicture" class="pi">
+                  <div class="ll">
+                    <span v-if="item.optionType==0">{{item.optionss}}</span>
+                    <div v-else>
+                      <div class="tss" v-for="xitem in item.optionssimgs" :key="xitem.id">
+                        <img class="ittimg" :src="xitem.urlPath">
+                      </div>
+                    </div>
                   </div>
-                  <div v-else>无</div>
-                </td>
-                <td>
-                  <div class="ll">{{item.optionss}}</div>
                 </td>
                 <td>
                   <div class="ll">{{item.rightAnswer}}</div>
@@ -102,7 +100,7 @@
                   <div class="ll">{{item.score}}</div>
                 </td>
                 <td>
-                  <router-link tag="span" class="operate" :to="item.editUrl">编辑</router-link>
+                  <router-link tag="span" class="operate" :to="item.editUrl+'&page='+searchData.page.page">编辑</router-link>
                   <span class="operate" @click="del(item)">删除</span>
                 </td>
               </tr>
@@ -116,7 +114,7 @@
         </div>
       </div>
     </div>
-    <el-dialog title="批量导入题库" :visible.sync="patchVisible" width="80%" center>
+    <el-dialog title="批量导入题库" :visible.sync="patchVisible" width="1200px" center>
       <div class="cfile" v-show="file.path.length==0">
         <div :class="[ 'lb', {'lh': file.path.length!=0}]">
           <button class="lt" @click="selectFiles">请选择文件</button>
@@ -128,7 +126,7 @@
         </div>
       </div>
       <div class="panel">
-        <div class="p-c" style="margin:0;">
+        <div class="p-c" style="margin:0;max-height:500px;overflow-y:auto;">
           <table class="comTb">
             <tr>
               <th>
@@ -158,155 +156,29 @@
                 </div>
               </td>
               <td>
-                <div class="ll">{{item.exerciseContent}}</div>
+                <div class="ll">{{item.exerciseContentback}}</div>
               </td>
               <td>
-                <div class="ll">{{item.optionss}}</div>
+                <div class="ll">{{item.optionssback}}</div>
               </td>
               <td>
-                <div class="ll">{{item.rightAnswer}}</div>
+                <div class="ll">{{item.rightAnswerback}}</div>
               </td>
               <td>
-                <div class="ll">{{item.answerAnalysis}}</div>
+                <div class="ll">{{item.answerAnalysisback}}</div>
               </td>
               <td>{{item.score}}</td>
               <td>
-                <div class="ll">{{item.remark}}</div>
+                <div class="ll">{{item.remarkback}}</div>
               </td>
             </tr>
           </table>
-          <div class="i" style="text-align: center;">
-            <button class="btn" @click="excelImport">保存</button>
-          </div>
+        </div>
+        <div class="pf">
+          <button class="btn" @click="excelImport">保存</button>
         </div>
       </div>
     </el-dialog>
-    <!-- <el-dialog title="编辑题库" :visible.sync="exerciseEditVisable" width="800px" center>
-      <div class="panel">
-        <div class="p-t p-t2">
-          <div class="name">
-            <span>编辑题库</span>
-          </div>
-        </div>
-        <div class="p-c">
-          <div class="i">
-            <div class="tl">
-              <span>题目内容：</span>
-            </div>
-            <div class="tr">
-              <input
-                class="add-input"
-                type="text"
-                placeholder="请输入题目内容"
-                v-model="exerciseContent.exerciseContent"
-              >
-            </div>
-          </div>
-          <div class="i" style="height: 100px;">
-            <div class="tl">
-              <span>题目图片：</span>
-            </div>
-            <div class="tr">
-              <fileUpload ref="fileUpload" :imgPath="exerciseContent.exerciseContentPicture"></fileUpload>
-            </div>
-          </div>
-          <div style="clear:both;"></div>
-          <div class="i">
-            <div class="tl">
-              <span>题型：</span>
-            </div>
-            <div class="tr">
-              <el-select
-                id="input-exerc-typeid"
-                v-model="exerciseContent.exerciseTypeId"
-                clearable
-                placeholder="请选择题型"
-              >
-                <el-option
-                  v-for="item in typeAllList"
-                  :key="item.id"
-                  :label="item.exerciseName"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </div>
-          </div>
-          <div class="i">
-            <div class="tl">
-              <span>可选项：</span>
-            </div>
-            <div class="tr">
-              <input
-                class="add-input"
-                type="text"
-                placeholder="请输入可选项"
-                v-model="exerciseContent.optionss"
-              >
-            </div>
-          </div>
-          <div class="i">
-            <div class="tl">
-              <span>正确答案：</span>
-            </div>
-            <div class="tr">
-              <input
-                class="add-input"
-                type="text"
-                placeholder="请输入正确答案"
-                v-model="exerciseContent.rightAnswer"
-              >
-            </div>
-          </div>
-          <div class="i">
-            <div class="tl">
-              <span>分数：</span>
-            </div>
-            <div class="tr">
-              <input class="add-input" type="text" placeholder="分数" v-model="exerciseContent.score">
-            </div>
-          </div>
-          <div class="i">
-            <div class="tl">
-              <span>答案解析：</span>
-            </div>
-            <div class="tr">
-              <input
-                class="add-input"
-                type="text"
-                placeholder="请输入答案解析"
-                v-model="exerciseContent.answerAnalysis"
-              >
-            </div>
-          </div>
-          <div class="i" style="height: 100px;">
-            <div class="tl">
-              <span>答案解析图片：</span>
-            </div>
-            <div class="tr">
-              <fileUpload ref="fileUpload1" :imgPath="exerciseContent.exerciseAnswerPicture"></fileUpload>
-            </div>
-          </div>
-          <div style="clear:both"></div>
-          <div class="i">
-            <div class="tl">
-              <span>备注：</span>
-            </div>
-            <div class="tr">
-              <input
-                class="add-input"
-                type="text"
-                placeholder="请输入答案解析"
-                v-model="exerciseContent.remark"
-              >
-            </div>
-          </div>
-
-          <div class="i" style="text-align: center;">
-            <button class="btn" @click="save">保存</button>
-          </div>
-        </div>
-      </div>
-    </el-dialog>-->
     <el-dialog title="提示" :visible.sync="delVisable" width="30%" center>
       <span>{{msg}}</span>
       <span style="margin-left:20px;color:#0dbc5c;">{{exerciseContent.exerciseContentName}}</span>
@@ -335,7 +207,7 @@ export default {
   data() {
     return {
       msg: "确定删除这道题目吗?",
-      editurl: "/exercisecontent/edit/" + this.$route.params.sectionId,
+      editUrl: "/exercisecontent/edit/" + this.$route.params.sectionId,
       addurl: "/exercisecontent/edit/" + this.$route.params.sectionId + "/0",
       courseUrl: "/course/list",
       chapterUrl: "/chapter/list/" + this.$route.params.courseId,
@@ -379,13 +251,35 @@ export default {
   },
   created() {
     this.loading = false;
-    this.getData(1);
     this.getTypes();
     this.getCourse();
     this.getCharpter();
     this.getSection();
+    this.getData(1);
   },
   methods: {
+    parseImg(eitem) {
+      if (eitem.optionss.indexOf("JX-IMG-") > -1) {
+        var datas = [];
+        var imgDatas = eitem.optionss.split(";");
+        eitem.optionType = 1;
+        for (var i = 0; i < imgDatas.length; i++) {
+          var element = imgDatas[i];
+          if (element.length > 7) {
+            var path = element.substring(7, element.length);
+            if (path.length > 20) {
+              var item = {
+                id: i,
+                urlPath: path
+              };
+              datas.push(item);
+            }
+          }
+        }
+        console.log(datas);
+        eitem.optionssimgs = datas;
+      }
+    },
     selectFiles() {
       let that = this;
       $(".sf").trigger("click");
@@ -489,7 +383,13 @@ export default {
           if (rdata.code == 0) {
             that.conList = rdata.page.list;
             that.conList.forEach(item => {
-              item.editUrl = that.editurl + "/" + item.id;
+              item.editUrl = that.editUrl + "/" + item.id+"#url="+that.$route.path;
+              item.optionType = 0;
+              that.parseImg(item);
+              if (item.exerciseContent.length > 50) {
+                item.exerciseContent =
+                  item.exerciseContent.substring(0, 50) + "...";
+              }
             });
             that.searchData.page.listTotal = rdata.page.totalCount;
           }
@@ -497,6 +397,26 @@ export default {
         .catch(function(err) {
           console.log(err);
         });
+    },
+    tidyImgs(imgPath) {
+      var imgDatas = imgPath.split(";");
+      var datas = [];
+      for (var i = 0; i < imgDatas.length; i++) {
+        var element = imgDatas[i];
+        if (element.length > 7) {
+          var path = element.substring(7, element.length);
+          if (path.length > 20) {
+            var item = {
+              urlPath: path,
+              imgPath: path,
+              index: i,
+              htmlid: util.guid()
+            };
+            datas.push(item);
+          }
+        }
+      }
+      return datas;
     },
     getTypes() {
       var that = this;
@@ -575,6 +495,32 @@ export default {
       this.patchVisible = true;
     },
     tidy(item) {
+      if (item.exerciseContent.length > 50) {
+        item.exerciseContentback =
+          item.exerciseContent.substring(0, 50) + "...";
+      } else {
+        item.exerciseContentback = item.exerciseContent;
+      }
+      if (item.optionss.length > 50) {
+        item.optionssback = item.optionss.substring(0, 50) + "...";
+      } else {
+        item.optionssback = item.optionss;
+      }
+      if (item.rightAnswer.length > 50) {
+        item.rightAnswerback = item.rightAnswer.substring(0, 50) + "...";
+      } else {
+        item.rightAnswerback = item.rightAnswer;
+      }
+      if (item.answerAnalysis.length > 50) {
+        item.answerAnalysisback = item.answerAnalysis.substring(0, 50) + "...";
+      } else {
+        item.answerAnalysisback = item.answerAnalysis;
+      }
+      if (item.remark.length > 50) {
+        item.remarkback = item.remark.substring(0, 50) + "...";
+      } else {
+        item.remarkback = item.remark;
+      }
       this.typeAllList.forEach(element => {
         if (element.exerciseName == item.exerciseTypeName) {
           item.exerciseTypeId = element.id;
@@ -759,6 +705,19 @@ table.comTb .u-info:hover .i span {
   width: 480px;
 }
 
+.pf {
+  border-top: solid 1px #ddd;
+  height: 54px;
+}
+.tss {
+  width: 60px;
+  float: left;
+  height: 60px;
+  line-height: 60px;
+}
+.tss .ittimg {
+  width: 60px;
+}
 @media screen and (max-width: 1400px) {
   table.comTb .u-info .i img {
     width: 35px;
@@ -778,6 +737,20 @@ table.comTb .u-info:hover .i span {
   table.comTb .u-info .ii {
     margin-left: 0;
     margin-top: 10px;
+  }
+  .ittimg {
+    width: 40px;
+  }
+  .tss {
+    height: 60px;
+    width: 60px;
+    line-height: 60px;
+    border: solid 1px #ddd;
+    margin-right: 5px;
+  }
+  .tss .ittimg {
+    width: 60px;
+    height: 60px;
   }
 }
 </style>

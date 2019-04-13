@@ -39,6 +39,12 @@
                       size="mini"
                       @click="() => removeDept(node, data)"
                     >删除</el-button>
+                    <el-button
+                      v-if="node.data.parentId==0"
+                      type="text"
+                      size="mini"
+                      @click="() => editdept(node, data)"
+                    >编辑</el-button>
                   </div>
                 </div>
               </el-tree>
@@ -71,6 +77,81 @@
         </div>
       </div>
     </div>
+    <el-dialog title="编辑公司" :visible.sync="parentdeptvisable" width="650px" center>
+      <div class="panel" style="margin-bottom:0;">
+        <div class="p-t p-t2">
+          <div class="name">
+            <span>公司编辑</span>
+          </div>
+        </div>
+        <div class="p-c">
+          <div class="i">
+            <div class="tl">
+              <span>名称：</span>
+            </div>
+            <div class="tr">
+              <input class="add-input" type="text" placeholder="请输入名称" v-model="parentDept.name">
+            </div>
+          </div>
+          <div class="i">
+            <div class="tl">
+              <span>地址：</span>
+            </div>
+            <div class="tr">
+              <input class="add-input" type="text" placeholder="请输入地址" v-model="parentDept.address">
+            </div>
+          </div>
+          <div class="i">
+            <div class="tl">
+              <span>公司联系人：</span>
+            </div>
+            <div class="tr">
+              <input
+                class="add-input"
+                type="text"
+                placeholder="请输入公司联系人"
+                v-model="parentDept.contact"
+              >
+            </div>
+          </div>
+          <div class="i">
+            <div class="tl">
+              <span>联系方式：</span>
+            </div>
+            <div class="tr">
+              <input class="add-input" type="text" placeholder="请输入联系方式" v-model="parentDept.phone">
+            </div>
+          </div>
+
+          <div class="i">
+            <div class="tl">
+              <span>联系方式：</span>
+            </div>
+            <div class="tr">
+              <fileUpload ref="fileUpload" :imgPath="parentDept.picture"></fileUpload>
+            </div>
+          </div>
+
+          <div class="i">
+            <div class="tl">
+              <span>描述：</span>
+            </div>
+            <div class="tr">
+              <textarea
+                style="width:383px;height:80px;"
+                placeholder="请输入描述"
+                v-model="parentDept.description"
+              ></textarea>
+            </div>
+          </div>
+          <div style="clear:both;"></div>
+        </div>
+      </div>
+      <div class="pff">
+        <button class="cb" @click="savepdept">确 定</button>
+        <button class="ib" @click="deptvisable=false">取 消</button>
+      </div>
+    </el-dialog>
     <el-dialog title="添加子部门" :visible.sync="deptvisable" width="650px" center>
       <div class="panel" style="margin-bottom:0;height:200px;">
         <div class="p-t p-t2">
@@ -155,10 +236,17 @@
 import axios from "axios";
 import routerPaging from "@/components/child-components/page-components/paging";
 import api from "../../config/apiConfig";
+import fileUpload from "@/components/child-components/upload-components/webupload";
+
 export default {
   name: "DeptList",
+  components: {
+    fileUpload
+  },
   data() {
     return {
+      parentdeptvisable: false,
+      parentDept: {},
       msg: "你确定删除这个部门吗？",
       menuvisable: false,
       deptvisable: false,
@@ -186,6 +274,10 @@ export default {
       this.currentDept = data;
       this.childDept = {};
       this.deptvisable = true;
+    },
+    editdept(node, data) {
+      this.parentdeptvisable = true;
+      this.parentDept = data;
     },
     removeDept(node, data) {
       this.delvisable = true;
@@ -225,6 +317,23 @@ export default {
       var that = this;
       this.childDept.parentId = this.currentDept.deptId;
       var param = this.childDept;
+      axios.post(api.api.dept.save, param).then(response => {
+        var rdata = response.data;
+        if (rdata.code == 0) {
+          this.$message({
+            message: "保存成功",
+            type: "success"
+          });
+          that.deptvisable = false;
+          that.getDepts();
+        } else {
+          this.$message.error("保存失败" + rdata.msg);
+        }
+      });
+    },
+    savepdept() {
+      var that = this;
+      var param = this.parentDept;
       axios.post(api.api.dept.save, param).then(response => {
         var rdata = response.data;
         if (rdata.code == 0) {
@@ -398,11 +507,11 @@ export default {
 .ir {
   border: 0 !important;
   color: #f00;
-  background:#f3f3f3 !important;
+  background: #f3f3f3 !important;
 }
-.ic:hover{
-  background:#f3f3f3 !important;
-  color:#000;
+.ic:hover {
+  background: #f3f3f3 !important;
+  color: #000;
 }
 .ic {
   border: 0 !important;

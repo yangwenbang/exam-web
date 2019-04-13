@@ -15,111 +15,93 @@
         </div>
         <div>
           <div class="p-c">
-            <div class="i">
-              <div class="tl">
-                <span>资讯标题：</span>
+            <div class="fphone">
+              <div class="i">
+                <div class="tl">
+                  <span>资讯标题：</span>
+                </div>
+                <div class="tr">
+                  <input
+                    class="add-input"
+                    type="text"
+                    placeholder="请输入资讯标题"
+                    v-model="newsMsg.msgName"
+                  >
+                </div>
               </div>
-              <div class="tr">
-                <input
-                  class="add-input"
-                  type="text"
-                  placeholder="请输入资讯标题"
-                  v-model="newsMsg.msgName"
-                >
+              <div class="i">
+                <div class="tl">
+                  <span>资讯简介：</span>
+                </div>
+                <div class="tr">
+                  <input
+                    class="add-input"
+                    type="text"
+                    placeholder="请输入资讯简介(该项将作为分享的简介)"
+                    v-model="newsMsg.oneWord"
+                  >
+                </div>
+              </div>
+              <div class="i">
+                <div class="tl">
+                  <span>所属项目：</span>
+                </div>
+                <div class="tr">
+                  <el-select
+                    el="select"
+                    v-model="newsMsg.projectId"
+                    clearable
+                    placeholder="请选择所属项目"
+                    @change="projectChange"
+                  >
+                    <el-option
+                      v-for="item in projectlist"
+                      :key="item.id"
+                      :label="item.projectName"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </div>
+              </div>
+              <div class="i">
+                <div class="tl">
+                  <span>资讯类别：</span>
+                </div>
+                <div class="tr">
+                  <el-select
+                    el="select"
+                    v-model="newsMsg.msgTypeId"
+                    clearable
+                    placeholder="请选择资讯类别"
+                  >
+                    <el-option
+                      v-for="item in pMsgTypes"
+                      :key="item.id"
+                      :label="item.typeName"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </div>
+              </div>
+              <div class="i">
+                <div class="tl">
+                  <span>排序：</span>
+                </div>
+                <div class="tr">
+                  <input class="add-input" type="text" placeholder="请输入排序" v-model="newsMsg.seq">
+                </div>
               </div>
             </div>
-            <div class="i">
-              <div class="tl">
-                <span>资讯简介：</span>
-              </div>
-              <div class="tr">
-                <input
-                  class="add-input"
-                  type="text"
-                  placeholder="请输入资讯简介"
-                  v-model="newsMsg.oneWord"
-                >
-              </div>
-            </div>
-            <!-- <div class="i">
-              <div class="tl">
-                <span>资讯微信号：</span>
-              </div>
-              <div class="tr">
-                <input
-                  class="add-input"
-                  type="text"
-                  placeholder="请输入资讯微信号"
-                  v-model="newsMsg.wechatNum"
-                >
-              </div>
-            </div>-->
-            <div class="i">
-              <div class="tl">
-                <span>项目：</span>
-              </div>
-              <div class="tr">
-                <el-select el="select" v-model="newsMsg.projectId" clearable placeholder="请选择项目">
-                  <el-option
-                    v-for="item in projectlist"
-                    :key="item.id"
-                    :label="item.projectName"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-              </div>
-            </div>
-            <div class="i">
-              <div class="tl">
-                <span>资讯类别：</span>
-              </div>
-              <div class="tr">
-                <el-select el="select" v-model="newsMsg.msgTypeId" clearable placeholder="请选择资讯类别">
-                  <el-option
-                    v-for="item in msgTypes"
-                    :key="item.id"
-                    :label="item.typeName"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-              </div>
-            </div>
-            <div class="i">
-              <div class="tl">
-                <span>排序：</span>
-              </div>
-              <div class="tr">
-                <input class="add-input" type="text" placeholder="请输入排序" v-model="newsMsg.seq">
-              </div>
-            </div>
-            <!-- <div class="i">
-              <div class="tl">
-                <span>资讯类型：</span>
-              </div>
-              <div class="tr">
-                <el-select
-                  el="select"
-                  v-model="newsMsg.adType"
-                  clearable
-                  placeholder="请选择资讯类型"
-                >
-                  <el-option
-                    v-for="item in adtypes"
-                    :key="item.id"
-                    :label="item.value"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-              </div>
-            </div>-->
-            <div class="i">
-              <div class="tl">
-                <span>资讯内容：</span>
-              </div>
-              <div class="tr">
-                <div class="kd">
-                  <div class="ckeditor">
-                    <textarea id="editor" rows="10" cols="100"></textarea>
+            <div class="fphone">
+              <div class="i">
+                <div class="tl">
+                  <span>资讯内容：</span>
+                </div>
+                <div class="tr">
+                  <div class="kd">
+                    <div class="ckeditor">
+                      <textarea id="editor"></textarea>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -146,8 +128,16 @@ export default {
   },
   data() {
     return {
-      newsMsg: {},
+      newsMsg: {
+        projectId: null,
+        msgTypeId: null,
+        msgContent: "",
+        msgName: "",
+        oneWord: "",
+        seq: null
+      },
       projectlist: [],
+      pMsgTypes: [],
       msgTypes: []
     };
   },
@@ -156,13 +146,32 @@ export default {
     this.getProjects();
   },
   mounted() {
+    var that = this;
     CKEDITOR.replace("editor", {
       filebrowserImageUploadUrl: api.api.file.upload,
-      language: "zh-cn"
+      language: "zh-cn",
+      height: 500
     });
-    this.getInfo();
+    CKEDITOR.on("instanceReady", function(e) {
+      that.getInfo();
+    });
   },
   methods: {
+    projectChange() {
+      var that = this;
+      this.newsMsg.msgTypeId=null;
+      that.pMsgTypes = [];
+      if (that.newsMsg.projectId != null) {
+        if (that.newsMsg.projectId !== "") {
+          that.msgTypes.forEach(item => {
+            if (item.projectId == that.newsMsg.projectId) {
+              console.log(item);
+              that.pMsgTypes.push(item);
+            }
+          });
+        }
+      }
+    },
     getProjects() {
       var that = this;
       axios.post(api.api.project.listall).then(response => {

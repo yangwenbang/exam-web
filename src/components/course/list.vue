@@ -118,13 +118,13 @@
                   <div class="ll">课程名称</div>
                 </th>
                 <th>项目名称</th>
-                <th>分类名称</th>
-                <th>学科名称</th>
+                <th class="s-sw">分类</th>
+                <th>学科</th>
                 <th>课时数</th>
                 <th>课程类型</th>
                 <th>价格</th>
-                <th>教师</th>
-                <th>发布时间</th>
+                <!-- <th>教师</th> -->
+                <th class="s-sw">发布时间</th>
                 <th>排序</th>
                 <th>是否有效</th>
                 <th>操作</th>
@@ -139,18 +139,23 @@
                   <div class="ll">{{item.courseName}}</div>
                 </td>
                 <td>{{item.projectName}}</td>
-                <td>{{item.categoryName}}</td>
+                <td class="s-sw">{{item.categoryName}}</td>
                 <td>{{item.subjectName}}</td>
                 <td>{{item.courseCount}}</td>
                 <td>
                   <span v-for="xitem in pOptions" :key="xitem.id">
                     <span v-if="xitem.id==item.courseType">{{xitem.label}}</span>
                   </span>
-                  <a class="operate" target="blank" :href="item.courseUrl" v-if="item.courseType==1&&item.courseUrl">(点击查看)</a>
+                  <a
+                    class="operate"
+                    target="blank"
+                    :href="item.courseUrl"
+                    v-if="item.courseType==1&&item.courseUrl"
+                  >(点击查看)</a>
                 </td>
                 <td>{{item.price}}</td>
-                <td>{{item.teacherName}}</td>
-                <td>{{item.replayDate}}</td>
+                <!-- <td>{{item.teacherName}}</td> -->
+                <td class="s-sw">{{item.replayDate}}</td>
                 <td>{{item.seq}}</td>
                 <td>
                   <div>

@@ -49,34 +49,43 @@
             <table class="comTb">
               <tr>
                 <th>
-                  <div class="ll">类别名称</div>
+                  <div>类别名称</div>
                 </th>
                 <th>
-                  <div class="ll">所属项目</div>
+                  <div>所属项目</div>
                 </th>
                 <th>
-                  <div class="ll">是否有效</div>
+                  <div>是否有效</div>
                 </th>
-                <th style="width:800px;">
-                  <div class="ll">描述</div>
+                <th style="width:300px;">
+                  <div>描述</div>
+                </th>
+                <th>
+                  <div>排序</div>
                 </th>
                 <th style="width:300px;">操作</th>
               </tr>
               <tr v-for="item in typelist" :key="item.id">
                 <td>
-                  <div class="ll">{{item.typeName}}</div>
+                  <div>{{item.typeName}}</div>
                 </td>
                 <td>
-                  <div class="ll">{{item.projectName}}</div>
+                  <div>{{item.projectName}}</div>
                 </td>
                 <td>
-                  <div class="ll">
+                  <div>
                     <span class="operate" v-if="item.effective==0">无效</span>
                     <span class="operate" v-if="item.effective==1">有效</span>
                   </div>
                 </td>
                 <td>
-                  <div class="ll">{{item.typeDesc}}</div>
+                  <div>
+                    <span v-if="item.typeDesc">{{item.typeDesc}}</span>
+                    <span v-else>无</span>
+                  </div>
+                </td>
+                <td>
+                  <div>{{item.seq}}</div>
                 </td>
                 <td>
                   <span class="operate" @click="info(item)">编辑</span>
@@ -138,7 +147,15 @@
               <input class="add-input" type="text" placeholder="请输入类别描述" v-model="type.typeDesc">
             </div>
           </div>
-          <div class="i" style="text-align: center;">
+          <div class="i">
+            <div class="tl">
+              <span>排序：</span>
+            </div>
+            <div class="tr">
+              <input class="add-input" type="text" placeholder="请输入排序" v-model="type.seq">
+            </div>
+          </div>
+          <div class="pf">
             <button class="btn" @click="save">保存</button>
           </div>
         </div>
@@ -177,8 +194,8 @@ export default {
       typelist: [],
       searchData: {
         conditions: {
-          sidx: "",
-          order: "desc"
+          sidx: "seq",
+          order: "asc"
         },
         page: {
           page: 1,

@@ -53,7 +53,7 @@
           <div class="result-c">
             <table class="comTb">
               <tr>
-                <th>类别图片</th>
+                <!-- <th>类别图片</th> -->
                 <th>
                   <div class="ll">类别名称</div>
                 </th>
@@ -65,11 +65,11 @@
                 <th style="width:300px;">操作</th>
               </tr>
               <tr v-for="item in categorylist" :key="item.id">
-                <td>
+                <!-- <td>
                   <div class="pi-c">
                     <img :src="item.categoryPicture" class="pi">
                   </div>
-                </td>
+                </td> -->
                 <td>
                   <div class="ll">{{item.categoryName}}</div>
                 </td>
@@ -130,14 +130,14 @@
               <input class="add-input" type="text" placeholder="请输入课章排序" v-model="category.seq">
             </div>
           </div>
-          <div class="i" style="height: 120px;">
+          <!-- <div class="i" style="height: 120px;">
             <div class="tl">
               <span>类别图片：</span>
             </div>
             <div class="tr">
               <fileUpload ref="fileUpload" :imgPath="category.categoryPicture"></fileUpload>
             </div>
-          </div>
+          </div> -->
           <div class="i">
             <div class="tl">
               <span>类别描述：</span>
@@ -151,7 +151,7 @@
               >
             </div>
           </div>
-          <div class="i" style="text-align: center;">
+          <div class="pf">
             <button class="btn" @click="save">保存</button>
           </div>
         </div>

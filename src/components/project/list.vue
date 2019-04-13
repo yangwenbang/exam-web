@@ -48,7 +48,7 @@
           <div class="result-c">
             <table class="comTb">
               <tr>
-                <th>项目图片</th>
+                <!-- <th>项目图片</th> -->
                 <th>
                   <div class="ll">项目名称</div>
                 </th>
@@ -60,11 +60,11 @@
                 <th style="width:300px;">操作</th>
               </tr>
               <tr v-for="item in projectlist" :key="item.id">
-                <td>
+                <!-- <td>
                   <div class="pi-c">
                     <img :src="item.projectPicture" class="pi">
                   </div>
-                </td>
+                </td> -->
                 <td>
                   <div class="ll">{{item.projectName}}</div>
                 </td>
@@ -127,14 +127,14 @@
               <input class="add-input" type="text" placeholder="请输入课章排序" v-model="project.seq">
             </div>
           </div>
-          <div class="i" style="height: 120px;">
+          <!-- <div class="i" style="height: 120px;">
             <div class="tl">
               <span>项目图片：</span>
             </div>
             <div class="tr">
               <fileUpload ref="fileUpload" :imgPath="project.projectPicture"></fileUpload>
             </div>
-          </div>
+          </div> -->
           <div class="i">
             <div class="tl">
               <span>项目描述：</span>
@@ -148,7 +148,7 @@
               >
             </div>
           </div>
-          <div class="i" style="text-align: center;">
+          <div class="pf">
             <button class="btn" @click="save">保存</button>
           </div>
         </div>
@@ -330,7 +330,7 @@ export default {
         effective: 1,
         seq: null
       };
-      this.$refs.fileUpload.urlPath = null;
+      // this.$refs.fileUpload.urlPath = null;
       this.exerciseEditVisable = true;
     }
   }

@@ -2,7 +2,7 @@
   <div class="footer">
     <div class="information">
       <p class="m-t">
-        <span>江西教师一考通--后台管理系统@1.0.1</span>
+        <span>继续教育一考通--后台管理系统@1.0.1</span>
         <!-- <span>区块链智能终端--后台管理系统@1.0.1</span> -->
       </p>
     </div>

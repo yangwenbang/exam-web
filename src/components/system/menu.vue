@@ -295,10 +295,10 @@ export default {
   border: 0 !important;
   color: #000;
 }
-@media screen and (min-width: 1400px) {
+/* @media screen and (min-width: 1400px) {
   .cc {
-    float:left;
+    float: left;
     width: 50%;
   }
-}
+} */
 </style>

@@ -118,6 +118,7 @@ div.main-container .t span {
 
   div.main-container {
     margin-left: 180px;
+    padding-top: 42px;
   }
 }
 </style>

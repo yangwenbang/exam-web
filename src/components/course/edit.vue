@@ -110,7 +110,7 @@
                 </el-select>
               </div>
             </div>
-            <div class="i2">
+            <!-- <div class="i2">
               <div class="tl">
                 <span>教师：</span>
               </div>
@@ -129,7 +129,7 @@
                   ></el-option>
                 </el-select>
               </div>
-            </div>
+            </div> -->
             <div class="i2">
               <div class="tl">
                 <span>精品课程：</span>

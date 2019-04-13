@@ -49,7 +49,7 @@
               </el-select>
             </div>
           </div>
-          <div class="i" style="text-align: center;">
+          <div class="pf">
             <button class="btn" @click="addEquipment" :class="{ not : isable }" :disabled="isSub">添加设备</button>
           </div>
         </div>

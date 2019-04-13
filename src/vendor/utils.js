@@ -20,7 +20,7 @@ export default {//加密
   },
 
   //DES加密 Pkcs7填充方式
-  encryptByDES(message, key) {
+  encryptByDES(message, key){
     key="secray.0n.www";
     const keyHex = CryptoJS.enc.Utf8.parse(key);
     const encrypted = CryptoJS.DES.encrypt(message, keyHex, {

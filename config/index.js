@@ -4,7 +4,7 @@
 
 const path = require('path')
 var proxyConfig = require('./proxyConfig')
-    // var routerpath = 'http://router.skywindlink.com/router/';
+// var routerpath = 'http://router.skywindlink.com/router/';
 
 module.exports = {
     dev: {
@@ -52,7 +52,7 @@ module.exports = {
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),
         assetsSubDirectory: 'static',
-        assetsPublicPath: '/',
+        assetsPublicPath: '/admin/',
         /**
          * Source Maps
          */

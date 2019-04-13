@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="head-c">
-      <router-link tag="span" class="bread-item lk" :to="courseUrl">课程</router-link>
+      <router-link tag="span" class="bread-item lk" :to="courseUrl">{{course.courseName}}</router-link>
       <span class="bread-item">></span>
-      <router-link tag="span" class="bread-item lk" :to="chapterUrl">章</router-link>
+      <router-link tag="span" class="bread-item lk" :to="chapterUrl">{{chapter.chapterName}}</router-link>
       <span class="bread-item">></span>
       <span class="bread-item">节列表</span>
       <div style="float:right;">
@@ -82,7 +82,7 @@
                   <span v-for="xitem in typeAllList" :key="xitem.id">
                     <span v-if="xitem.id==item.exerciseModelId">{{xitem.modelName}}</span>
                   </span>
-                </td> -->
+                </td>-->
                 <td v-if="course.courseType==2||course.courseType==4">{{item.exerciseCount}}</td>
                 <td v-if="course.courseType!=2&&course.courseType!=4">{{item.sectionUrl}}</td>
                 <td>{{item.remark}}</td>
@@ -160,7 +160,7 @@
                 ></el-option>
               </el-select>
             </div>
-          </div> -->
+          </div>-->
           <div class="i" v-if="course.courseType!=2">
             <div class="tl">
               <span>节长度：</span>
@@ -245,7 +245,7 @@
               <input class="add-input" type="text" placeholder="请输入课节讲义" v-model="section.handout">
             </div>
           </div>-->
-          <div class="i" style="text-align: center;">
+          <div class="pf">
             <button class="btn" @click="save">保存</button>
           </div>
         </div>
@@ -254,7 +254,7 @@
 
     <el-dialog title="提示" :visible.sync="delVisable" width="30%" center>
       <span>{{msg}}</span>
-      <span style="margin-left:20px;color:#0dbc5c;">{{course.courseName}}</span>
+      <span style="margin-left:20px;color:#0dbc5c;">{{section.sectionName}}</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="delVisable = false">取 消</el-button>
         <el-button type="primary" @click="delData">确 定</el-button>
@@ -281,7 +281,7 @@ export default {
       courseId: this.$route.params.courseId,
       chapterId: this.$route.params.chapterId,
       chapterUrl: "/chapter/list/" + this.$route.params.courseId,
-      msg: "确定删除这个节吗?",
+      msg: "确定删除这个节(删除节将同时删除该节下的所有题目)吗?",
       exerciseEditVisable: false,
       detailVisable: false,
       delVisable: false,
@@ -298,6 +298,7 @@ export default {
       section: {},
       sectionlist: [],
       course: {},
+      chapter: {},
       searchData: {
         conditions: {
           chapterId: this.$route.params.chapterId,
@@ -318,6 +319,7 @@ export default {
     this.getTypes();
     this.getData(1);
     this.getCourse();
+    this.getChapter();
   },
   methods: {
     getData(val) {
@@ -362,6 +364,16 @@ export default {
         }
       });
     },
+    getChapter() {
+      var that = this;
+      var url = api.api.chapter.info + "/" + this.$route.params.chapterId;
+      axios.post(url).then(response => {
+        var rdata = response.data;
+        if (rdata.code == 0) {
+          that.chapter = rdata.chapter;
+        }
+      });
+    },
     save() {
       var that = this;
       that.section.chapterId = that.chapterId;
@@ -384,12 +396,12 @@ export default {
       });
     },
     del(item) {
-      this.course = item;
+      this.section = item;
       this.delVisable = true;
     },
     delData() {
-      var param = this.course;
-      axios.post(api.api.course.delete, param).then(response => {
+      var param = this.section;
+      axios.post(api.api.section.delete, param).then(response => {
         var rdata = response.data;
         if (rdata.code == 0) {
           this.$message({

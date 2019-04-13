@@ -125,6 +125,8 @@ export default {
   mounted() {
     CKEDITOR.replace("editor", {
       filebrowserImageUploadUrl: api.api.file.upload,
+      filebrowserUploadUrl: api.api.file.upload,
+      filebrowserFlashUploadUrl: api.api.file.upload,
       language: "zh-cn"
     });
     this.getInfo();

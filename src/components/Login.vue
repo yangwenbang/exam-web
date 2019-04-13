@@ -2,7 +2,7 @@
   <div>
     <div class="hd">
       <div class="t">
-        <span>江西教师一考通系统</span>
+        <span>继续教育一考通系统</span>
       </div>
     </div>
     <div class="ctt">
@@ -32,6 +32,7 @@
               v-model="login.upassword"
               placeholder="请输入登录密码"
               autocomplete="off"
+              @keyup.enter="loginbtn"
               @input="inputFocus"
             >
             <div class="hint" v-if=" isShowHint && hint === '请输入登录密码' ">
@@ -52,7 +53,7 @@
         <span>Copyright © 2019-2039</span>
       </div>
       <div class="i">
-        <span>异视界科技版权所有</span>
+        <span>异视界科技技术支持</span>
       </div>
     </div>
   </div>
@@ -84,32 +85,38 @@ export default {
     };
   },
   created() {
-    this.enter();
+    // this.enter();
   },
   watch: {
-    login: {
-      handler(curVal) {
-        this.phone = curVal.phone;
-        this.upassword = curVal.upassword;
-      },
-      deep: true
+    phone(val) {
+      if (val) {
+        this.isShowHint = false;
+      } else {
+        this.isShowHint = true;
+      }
+    },
+    upassword(val) {
+      if (val) {
+        this.isShowHint = false;
+      } else {
+        this.isShowHint = true;
+      }
     }
   },
   methods: {
-    enter() {
-      var that = this;
-      document.onkeydown = function() {
-        var key = window.event.keyCode;
-        if (key === 13) {
-          that.loginbtn();
-        }
-      };
-    },
-
+    // enter() {
+    //   var lett = this;
+    //   document.onkeydown = function() {
+    //     var key = window.event.keyCode;
+    //     if (key === 13) {
+    //       lett.loginbtn();
+    //     }
+    //   };
+    // },
     loginbtn() {
       let that = this;
-      var param = that.Vcode;
-      var data = {
+      let param = that.Vcode;
+      let data = {
         userName: that.login.phone,
         upassword: that.login.upassword
       };
@@ -136,20 +143,19 @@ export default {
         }
       });
     },
-
     checkLogin() {
-      var that = this;
+      let that = this;
       axios.post(api.api.user.checkLogin).then(response => {
-        var rdata = response.data;
+        let rdata = response.data;
         if (rdata.code == 0) {
           sessionStorage.setItem("info", JSON.stringify(rdata.user));
-          window.location.href = "/#/home";
+          this.$router.push({ path: "/home" });
         } else {
           if (response.data.message === "暂无权限") {
             util.alert(response.data.message);
           } else {
             util.alertdo(response.data.message, function() {
-              window.location.href = "#/";
+              this.$router.push({ path: "/" });
             });
           }
         }

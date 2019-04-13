@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="head-c">
-      <router-link tag="span" class="bread-item lk" :to="courseUrl">课程</router-link>
+      <router-link tag="span" class="bread-item lk" :to="courseUrl">{{course.courseName}}</router-link>
       <span class="bread-item">></span>
       <span class="bread-item">章列表</span>
       <div style="float:right;">
@@ -127,7 +127,7 @@
               <input class="add-input" type="text" placeholder="请输入课章排序" v-model="chapter.seq">
             </div>
           </div>
-          <div class="i" style="text-align: center;">
+          <div class="pf">
             <button class="btn" @click="save">保存</button>
           </div>
         </div>
@@ -171,6 +171,7 @@ export default {
         description: "",
         seq: null
       },
+      course:{},
       chapterlist: [],
       searchData: {
         conditions: {
@@ -190,6 +191,7 @@ export default {
   created() {
     this.loading = false;
     this.getData(1);
+    this.getCourse();
   },
   methods: {
     getData(val) {
@@ -207,6 +209,16 @@ export default {
               "/section/list/" + that.courseId + "/" + value.id;
           });
           that.searchData.page.listTotal = rdata.page.totalCount;
+        }
+      });
+    },
+    getCourse() {
+      var that = this;
+      var url = api.api.course.info + "/" + this.$route.params.courseId;
+      axios.post(url).then(response => {
+        var rdata = response.data;
+        if (rdata.code == 0) {
+          that.course = rdata.course;
         }
       });
     },

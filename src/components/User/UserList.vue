@@ -114,8 +114,8 @@
               <tr v-for="item in userlist" :key="item.id">
                 <td class="u-info" @click="showUser(item.id)">
                   <div class="ll">
-                    <span>{{item.mobile}}</span>
-                    <span v-show="item.username">({{item.username}})</span>
+                    <span v-show="item.username">{{item.username}}</span>
+                    <span v-show="item.mobile">({{item.mobile}})</span>
                   </div>
                 </td>
                 <td>
@@ -127,6 +127,8 @@
                 <td :class="{dg : !item.status} ">{{item.status ? '正常' : '禁用'}}</td>
                 <td>{{item.createTime}}</td>
                 <td>
+                  <span v-if="item.userType==1" class="operate" @click="qrcode(item)">查看二维码</span>
+                  <span v-if="item.userType==1" class="operate" @click="updateOrgan(item)">签约机构</span>
                   <router-link tag="span" class="operate" :to="item.url">编辑</router-link>
                   <span class="operate" v-if="item.status" @click="update(item,0)">禁用</span>
                   <span class="operate" v-else @click="update(item,1)">启用</span>
@@ -146,6 +148,59 @@
         </div>
       </div>
     </div>
+    <el-dialog title="合作伙伴二维码" :visible.sync="qrcodevisable" width="300px" center>
+      <div style="height:250px;" v-loading="hascreate">
+        <div style="margin-left:35px;" id="qrcode"></div>
+      </div>
+    </el-dialog>
+    <el-dialog title="合作伙伴签约" :visible.sync="organvisable" width="800px" center>
+      <div class="panel">
+        <div class="p-t p-t2">
+          <div class="name">
+            <span>机构列表</span>
+          </div>
+        </div>
+        <div class="result-c">
+          <table class="comTb">
+            <tr>
+              <th>
+                <div>机构logo</div>
+              </th>
+              <th>
+                <div>机构名称</div>
+              </th>
+              <th>
+                <div>机构码</div>
+              </th>
+              <th>机构地址</th>
+              <th>操作</th>
+            </tr>
+            <tr v-for="item in organDatas" :key="item.id">
+              <td>
+                <div class="pi-c">
+                  <img :src="item.organizationPicture" class="pi">
+                </div>
+              </td>
+              <td>
+                <div>{{item.organizationName}}</div>
+              </td>
+              <td>
+                <div>{{item.organizationCode}}</div>
+              </td>
+              <td>{{item.organizationAddress}}</td>
+              <td>
+                <span class="operate" @click="okOrgan(item)">确定签约</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="p-f">
+          <div class="page">
+            <routerPaging :total="orgsearchData.page.listTotal" v-on:change="getOrgData"></routerPaging>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -163,6 +218,10 @@ export default {
   },
   data() {
     return {
+      currentUser: {},
+      organvisable: false,
+      qrcodevisable: false,
+      hascreate: false,
       loading: true,
       deviceLoad: true,
       cardLoad: true,
@@ -196,17 +255,92 @@ export default {
           num: 10,
           listTotal: 0
         }
+      },
+      organDatas: [],
+      orgsearchData: {
+        conditions: {
+          status: null,
+          phone: "",
+          userName: "",
+          startTime: "",
+          endTime: "",
+          sidx: "",
+          order: "desc"
+        },
+        page: {
+          page: 1,
+          num: 10,
+          listTotal: 0
+        }
       }
     };
   },
   created() {
     this.loading = true;
     this.getData(1);
+    this.getOrgData(1);
   },
   mounted() {
     this.setDateTimePick();
   },
   methods: {
+    qrcode(item) {
+      var that = this;
+      that.hascreate = true;
+      this.qrcodevisable = true;
+      setTimeout(function() {
+        console.log(item);
+        var url =
+          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx96e00748bfc14aff&redirect_uri=http://www.jxjsykt.com/exam-admin/exam/userdetail/bind/user?usercode=" +
+          item.userId +
+          "&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect";
+        $("#qrcode").html("");
+        $("#qrcode").qrcode({
+          render: "canvas",
+          width: 180,
+          height: 180,
+          text: url
+        });
+        that.hascreate = false;
+      }, 5000);
+    },
+    updateOrgan(item) {
+      this.currentUser = util.clone(item);
+      this.organvisable = true;
+    },
+    okOrgan(item) {
+      console.log(item);
+       var that = this;
+      var param = {userId:this.currentUser.userId,offlineOrganizationId:item.id};
+      axios.post(api.api.user.okOrgan, param).then(response => {
+        var rdata = response.data;
+        if (rdata.code == 0) {
+          if (rdata.code == 0) {
+          this.$message({
+            message: "保存成功",
+            type: "success"
+          });
+          this.getData(1);
+          that.exerciseEditVisable = false;
+        } else {
+          this.$message.error("保存失败" + rdata.msg);
+        }
+        }
+      });
+    },
+    getOrgData(val) {
+      var that = this;
+      var param = that.orgsearchData;
+      that.orgsearchData.page.page = val;
+      axios.post(api.api.offline.organization.list, param).then(response => {
+        that.loading = false;
+        var rdata = response.data;
+        if (rdata.code == 0) {
+          that.organDatas = rdata.page.list;
+          that.orgsearchData.page.listTotal = rdata.page.totalCount;
+        }
+      });
+    },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => v[j]));
     },

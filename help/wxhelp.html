@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>继续教育一考通</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="main.js"></script>
+    <script src="common.js"></script>
+</head>
+
+<body>
+    <div class="bg">
+        <div class="i" id="usercode">
+            <div style="margin-bottom:10px;">您的推荐人:</div>
+            <div id="username"></div>
+        </div>
+        <div class="i" id="orcode">
+            <div style="margin-bottom:10px;">您的推荐机构:</div>
+            <div id="organization"></div>
+        </div>
+        <div class="f">
+            <div class="i0">
+                扫描二维码下载app
+            </div>
+            <div class="ii">
+                <img src="down.png" />
+            </div>
+            <!-- <div class="i1">
+                <span>Copyright © 2019-2039</span>
+            </div>
+            <div class="i2">
+                <span>异视界科技技术支持</span>
+            </div> -->
+        </div>
+    </div>
+    <script type="text/javascript">
+        var usercode = util.query('usercode');
+        var orcode = util.query('orcode');
+        if (usercode != null) {
+            $('#usercode').show();
+            $.post("http://www.jxjsykt.com:8080/exam-admin/exam/userdetail/bind/get/user?usercode=" + usercode, function (data) {
+                if (data.code == 0) {
+                    $("#username").text(data.user.userName);
+                }
+            });
+        } else if (orcode != null) {
+            $('#orcode').show();
+            $.post("http://www.jxjsykt.com:8080/exam-admin/exam/userdetail/bind/get/organization?orcode=" + orcode, function (data) {
+                if (data.code == 0) {
+                    $("#organization").text(data.organ.organizationName);
+                }
+            });
+        }
+        console.log(usercode, orcode);
+    </script>
+</body>
+
+</html>

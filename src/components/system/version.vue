@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="head-c">
-      <span class="bread-item">题型模板</span>
+      <span class="bread-item">版本列表</span>
     </div>
     <div class="content">
       <div class="panel">
@@ -16,28 +16,28 @@
               <div class="fh">
                 <div class="fcl">
                   <div class="fci">
-                    <span class="ct">模板名称:</span>
+                    <span class="ct">版本名称:</span>
                   </div>
                   <div class="fca">
-                    <input class="cin" type="text" v-model="searchData.conditions.modelName">
+                    <input class="cin" type="text" v-model="searchData.conditions.exerciseName">
                   </div>
                 </div>
               </div>
               <div class="fh">
                 <div class="fcl">
                   <div class="fci">
-                    <span class="ct">项目:</span>
+                    <span class="ct">版本类别:</span>
                   </div>
                   <div class="fca">
                     <el-select
-                      v-model="searchData.conditions.projectId"
+                      v-model="searchData.conditions.exerciseType"
                       clearable
                       placeholder="请选择"
                     >
                       <el-option
-                        v-for="item in projectList"
+                        v-for="item in typeOptions"
                         :key="item.id"
-                        :label="item.projectName"
+                        :label="item.label"
                         :value="item.id"
                       ></el-option>
                     </el-select>
@@ -57,11 +57,11 @@
       <div class="panel">
         <div class="p-t p-t2">
           <div class="name">
-            <span>模板列表</span>
+            <span>版本列表</span>
           </div>
           <div class="tools clearfix">
             <div class="t-r">
-              <span class @click="showEdit">添加数据</span>
+              <span class @click="showEdit">添加版本</span>
             </div>
           </div>
         </div>
@@ -70,34 +70,40 @@
             <table class="comTb">
               <tr>
                 <th>
-                  <div class="ll">模板名称</div>
+                  <div class="ll">设备类型</div>
                 </th>
                 <th>
-                  <div class="ll">项目类别</div>
+                  <div class="ll">版本号</div>
                 </th>
                 <th>
-                  <div class="ll">模板说明</div>
+                  <div class="ll">设备地址</div>
                 </th>
                 <th>
-                  <div class="ll">修改时间</div>
+                  <div class="ll">更新内容</div>
                 </th>
-                <th>操作</th>
+                <th>
+                  <div class="ll">操作</div>
+                </th>
               </tr>
-              <tr v-for="item in modelList" :key="item.id">
+              <tr v-for="item in versionList" :key="item.id">
                 <td>
-                  <div class="ll">{{item.modelName}}</div>
+                  <div class="ll">
+                    <span v-for="xitem in typeOptions" :key="xitem.id">
+                      <span v-if="item.equipmentType==xitem.id">{{xitem.label}}</span>
+                    </span>
+                  </div>
                 </td>
                 <td>
-                  <div class="ll">{{item.projectName}}</div>
+                  <div class="ll">{{item.equipmentVersion}}</div>
                 </td>
                 <td>
-                  <div class="ll">{{item.modelDescription}}</div>
+                  <div class="ll">{{item.equipmentPath}}</div>
                 </td>
                 <td>
-                  <div class="ll">{{item.updateTime}}</div>
+                  <div class="ll">{{item.updateContent}}</div>
                 </td>
                 <td>
-                  <span class="operate" @click="info(item)">编辑</span>
+                  <span class="operate" @click="edit(item)">编辑</span>
                   <span class="operate" @click="del(item)">删除</span>
                 </td>
               </tr>
@@ -111,37 +117,29 @@
         </div>
       </div>
     </div>
-    <el-dialog title="编辑题型模板" :visible.sync="editVisable" width="800px" center>
+    <el-dialog title="编辑题型" :visible.sync="editVisable" width="800px" center>
       <div class="panel">
         <div class="p-t p-t2">
           <div class="name">
-            <span>编辑题型模板</span>
+            <span>编辑版本</span>
           </div>
         </div>
         <div class="p-c">
           <div class="i">
             <div class="tl">
-              <span>模板名称：</span>
-            </div>
-            <div class="tr">
-              <input class="add-input" type="text" placeholder="请输入模板名称" v-model="model.modelName">
-            </div>
-          </div>
-          <div class="i">
-            <div class="tl">
-              <span>项目：</span>
+              <span>设备类型：</span>
             </div>
             <div class="tr">
               <el-select
-                v-model="model.projectId"
+                v-model="version.equipmentType"
                 clearable
-                placeholder="项目"
+                placeholder="请选择设备类型"
                 id="input-exerc-typeid"
               >
                 <el-option
-                  v-for="item in projectList"
+                  v-for="item in typeOptions"
                   :key="item.id"
-                  :label="item.projectName"
+                  :label="item.label"
                   :value="item.id"
                 ></el-option>
               </el-select>
@@ -149,30 +147,49 @@
           </div>
           <div class="i">
             <div class="tl">
-              <span>模板说明：</span>
+              <span>版本号：</span>
             </div>
             <div class="tr">
               <input
                 class="add-input"
                 type="text"
-                placeholder="请输入模板说明"
-                v-model="model.modelDescription"
+                placeholder="请输入版本号"
+                v-model="version.equipmentVersion"
               >
             </div>
           </div>
+          <div class="i">
+            <div class="tl">
+              <span>设备地址：</span>
+            </div>
+            <div class="tr">
+              <input
+                class="add-input"
+                type="text"
+                placeholder="请输入设备地址"
+                v-model="version.equipmentPath"
+              >
+            </div>
+          </div>
+          <div class="i">
+            <div class="tl">
+              <span>更新内容：</span>
+            </div>
+            <div class="tr">
+              <textarea
+                class="add-input"
+                style="width:480px;height:100px;"
+                placeholder="请输入更新内容"
+                v-model="version.updateContent"
+              ></textarea>
+            </div>
+          </div>
+          <div style="clear:both"></div>
           <div class="pf">
             <button class="btn" @click="save">保存</button>
           </div>
         </div>
       </div>
-    </el-dialog>
-    <el-dialog title="提示" :visible.sync="centerDialogVisible" width="30%" center>
-      <span>{{msg}}</span>
-      <span style="margin-left:20px;color:#0dbc5c;">{{model.modelName}}</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="delData">确 定</el-button>
-      </span>
     </el-dialog>
   </div>
 </template>
@@ -180,32 +197,24 @@
 import axios from "axios";
 import routerPaging from "@/components/child-components/page-components/paging";
 import api from "../../config/apiConfig";
-import userSelect from "@/components/child-components/selector-components/user";
 import Utils from "@/vendor/utils.js";
 
 export default {
-  name: "ExecriseModelList",
+  name: "VersionList",
   components: {
-    routerPaging,
-    userSelect
+    routerPaging
   },
   data() {
     return {
-      msg: "确定删除这条题型模板吗?",
+      version: {},
       editVisable: false,
-      centerDialogVisible: false,
-      loading: true,
-      projectList: [],
-      modelList: [],
-      model: {
-        id: 0
-      },
+      typeOptions: [{ id: 0, label: "安卓" }, { id: 1, label: "ios" }],
+      versionList: {},
       searchData: {
         conditions: {
-          projectId: null,
-          modelName: "",
-          sidx: "id",
-          order: "asc"
+          status: null,
+          sidx: "",
+          order: "desc"
         },
         page: {
           page: 1,
@@ -218,39 +227,23 @@ export default {
   created() {
     this.loading = false;
     this.getData(1);
-    this.getProjects();
   },
   methods: {
-    getData(val) {
-      console.log(val);
-      var that = this;
-      that.searchData.page.page = val;
-      var param = util.clone(that.searchData);
-      if (
-        param.conditions.projectId == null ||
-        param.conditions.projectId.length <= 0
-      ) {
-        param.conditions.projectId = 0;
-      }
-      that.loading = true;
-      axios.post(api.api.execrisetype.modellist, param).then(response => {
-        that.loading = false;
-
-        var rdata = response.data;
-        if (rdata.code == 0) {
-          that.modelList = rdata.page.list;
-          that.searchData.page.listTotal = rdata.page.totalCount;
-        } else {
-          this.$message.error("查询失败" + rdata.msg);
-        }
-      });
+    showEdit() {
+      this.version = {};
+      this.editVisable = true;
     },
-    getProjects() {
+    getData(val) {
       var that = this;
-      axios.post(api.api.project.listall).then(response => {
+      var param = util.clone(that.searchData);
+      that.searchData.page.page = val;
+      that.loading = true;
+      axios.post(api.api.version.list, param).then(response => {
+        that.loading = false;
         var rdata = response.data;
         if (rdata.code == 0) {
-          that.projectList = rdata.list;
+          that.versionList = rdata.page.list;
+          that.searchData.page.listTotal = rdata.page.totalCount;
         } else {
           this.$message.error("查询失败" + rdata.msg);
         }
@@ -258,48 +251,40 @@ export default {
     },
     save() {
       var that = this;
-      var param = that.model;
-      param.createTime=null;
-      param.updateTime=null;
-      axios.post(api.api.execrisetype.modelsave, param).then(response => {
-        that.loading = false;
-
+      var param = util.clone(that.version);
+      axios.post(api.api.version.save, param).then(response => {
         var rdata = response.data;
         if (rdata.code == 0) {
           this.$message({
             message: "保存成功",
             type: "success"
           });
-          that.editVisable = false;
           that.getData(1);
+          that.editVisable = false;
         } else {
           this.$message.error("保存失败" + rdata.msg);
         }
       });
     },
-    delData() {
-      var param = this.model;
-      axios.post(api.api.execrisetype.modeldel, param).then(response => {
+    edit(item) {
+      this.version = util.clone(item);
+      this.editVisable = true;
+    },
+    del(item) {
+      var that = this;
+      var param = util.clone(item);
+      axios.post(api.api.version.delete, param).then(response => {
         var rdata = response.data;
         if (rdata.code == 0) {
           this.$message({
             message: "删除成功",
             type: "success"
           });
-          this.getData(1);
+          that.getData(1);
         } else {
           this.$message.error("删除失败" + rdata.msg);
         }
-        this.centerDialogVisible = false;
       });
-    },
-    del(item) {
-      this.model = item;
-      this.centerDialogVisible = true;
-    },
-    info(item) {
-      this.model = item;
-      this.editVisable = true;
     },
     reSearch() {
       this.getData(1);
@@ -307,8 +292,11 @@ export default {
     reset() {
       var resetData = {
         conditions: {
-          projectId: null,
-          modelName: null
+          isEnable: null,
+          phone: "",
+          username: "",
+          startTime: "",
+          endTime: ""
         },
         page: {
           page: 1,
@@ -318,10 +306,6 @@ export default {
       };
       this.searchData = resetData;
       this.getData(1);
-    },
-    showEdit() {
-      this.editVisable = true;
-      this.model = {};
     }
   }
 };
@@ -400,6 +384,109 @@ table.comTb .u-info:hover .i span {
   width: 480px;
 }
 
+.cfile {
+  position: relative;
+  width: 300px;
+  height: 40px;
+  margin-bottom: 50px;
+}
+
+.cfile .download {
+  position: absolute;
+  top: 45px;
+  width: 650px;
+  color: #1abc9c;
+  font-size: 16px;
+  z-index: 2;
+}
+
+.cfile .download .dl,
+.cfile .download .dr {
+  display: inline-block;
+  width: 48%;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+}
+
+.cfile .download .dl:hover span,
+.cfile .download .dr:hover span {
+  text-decoration: underline;
+}
+
+.cfile .lb {
+  position: absolute;
+  float: left;
+  z-index: 10;
+  left: 0px;
+  top: 0;
+}
+
+.cfile .lo {
+  position: absolute;
+  float: left;
+  z-index: 10;
+  left: 0px;
+  top: 0;
+}
+
+.c .lh {
+  display: none;
+}
+
+.cfile .lt {
+  height: 40px;
+  width: 300px;
+  font-size: 16px;
+  text-align: center;
+  color: #333;
+  background: #f2f2f2;
+  cursor: pointer;
+  border: none;
+}
+
+.cfile .sf {
+  display: none;
+}
+
+.cfile .rt {
+  position: absolute;
+  z-index: 10;
+  right: -350px;
+  top: 0;
+}
+
+.cfile .rt span {
+  font-size: 14px;
+  line-height: 40px;
+  color: #1abc9c;
+  background: none;
+  width: 100%;
+}
+
+.cfile .rt:hover span {
+  text-decoration: underline;
+}
+
+.cfile .rf {
+  position: absolute;
+  z-index: 10;
+  right: -170px;
+  top: 0;
+}
+
+.cfile .rf span {
+  font-size: 14px;
+  line-height: 40px;
+  color: #1abc9c;
+  background: none;
+  width: 100%;
+}
+
+.cfile .rf:hover span {
+  text-decoration: underline;
+}
+
 @media screen and (max-width: 1400px) {
   table.comTb .u-info .i img {
     width: 35px;
@@ -419,6 +506,109 @@ table.comTb .u-info:hover .i span {
   table.comTb .u-info .ii {
     margin-left: 0;
     margin-top: 10px;
+  }
+  .cfile {
+    position: relative;
+    border: solid 1px #ddd;
+    width: 300px;
+    height: 40px;
+    margin-bottom: 50px;
+  }
+
+  .cfile .download {
+    position: absolute;
+    top: 45px;
+    width: 650px;
+    color: #1abc9c;
+    font-size: 16px;
+    z-index: 2;
+  }
+
+  .cfile .download .dl,
+  .cfile .download .dr {
+    display: inline-block;
+    width: 48%;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+  }
+
+  .cfile .download .dl:hover span,
+  .cfile .download .dr:hover span {
+    text-decoration: underline;
+  }
+
+  .cfile .lb {
+    position: absolute;
+    float: left;
+    z-index: 10;
+    left: 0px;
+    top: 0;
+  }
+
+  .cfile .lo {
+    position: absolute;
+    float: left;
+    z-index: 10;
+    left: 0px;
+    top: 0;
+  }
+
+  .c .lh {
+    display: none;
+  }
+
+  .cfile .lt {
+    height: 40px;
+    width: 300px;
+    font-size: 16px;
+    text-align: center;
+    color: #333;
+    background: #f2f2f2;
+    cursor: pointer;
+    border: none;
+  }
+
+  .cfile .sf {
+    display: none;
+  }
+
+  .cfile .rt {
+    position: absolute;
+    z-index: 10;
+    right: -350px;
+    top: 0;
+  }
+
+  .cfile .rt span {
+    font-size: 14px;
+    line-height: 40px;
+    color: #1abc9c;
+    background: none;
+    width: 100%;
+  }
+
+  .cfile .rt:hover span {
+    text-decoration: underline;
+  }
+
+  .cfile .rf {
+    position: absolute;
+    z-index: 10;
+    right: -170px;
+    top: 0;
+  }
+
+  .cfile .rf span {
+    font-size: 14px;
+    line-height: 40px;
+    color: #1abc9c;
+    background: none;
+    width: 100%;
+  }
+
+  .cfile .rf:hover span {
+    text-decoration: underline;
   }
 }
 </style>

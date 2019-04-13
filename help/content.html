@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>继续教育一考通</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="main.js"></script>
+    <script src="common.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            background: #fff;
+        }
+
+        .ic1 {
+            height: 40px;
+            border-bottom: solid 1px #ddd;
+        }
+
+        .ic1 span {
+            line-height: 40px;
+            margin-left: 20px;
+            color: #666;
+        }
+
+        .ic2 {
+            margin: 20px 15px;
+            font-size: 14px;
+        }
+
+        .ic3 {
+            margin: 20px 20px;
+            font-size: 14px;
+            height: 60px;
+        }
+
+        .i4 {
+            border-top: solid 10px #ddd;
+        }
+
+        .i4 .i {
+            margin: 20px;
+        }
+
+        .i5 {
+            margin-top: 20px;
+        }
+
+        .ii {
+            margin: 20px;
+            font-size: 15px;
+        }
+
+        .ci {
+            margin: 20px 0;
+        }
+
+        .ci a {
+            cursor: pointer;
+            font-size: 12px;
+            background: #fff;
+            border: solid 1px #333;
+            padding: 2px 7px;
+            text-align: center;
+            border-radius: 60%;
+            display: inline-block;
+        }
+
+        .ci .cc {
+            background: #27E545;
+            border: solid 1px #27E545;
+            color: #fff;
+        }
+
+        .bti {
+            margin-top: 10px;
+            float: right;
+            margin-right: 50px;
+            border: solid 1px #27E545;
+            background: #fff;
+            height: 34px;
+            color: #27E545;
+            padding: 0 10px;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg1">
+        <div class="ic1">
+            <span>单项选择题</span>
+        </div>
+        <div class="ii">
+            26.在WORD中，不能操作实现的是:( )
+        </div>
+        <div class="ic2">
+            <div class="ci">
+                <a class="cc">A</a>
+                在页眉中插入曰期;建立奇偶内容不同的页眉
+            </div>
+            <div class="ci">
+                <a>B</a>
+                在页眉中插入曰期;建立奇偶内容不同的页眉
+            </div>
+            <div class="ci">
+                <a>C</a>
+                在页眉中插入曰期;建立奇偶内容不同的页眉
+            </div>
+            <div class="ci">
+                <a>D</a>
+                在页眉中插入曰期;建立奇偶内容不同的页眉
+            </div>
+        </div>
+        <div class="ic3">
+            <button class="bti">查看解析</button>
+        </div>
+        <div class="i4">
+            <div class="i">
+                答案
+            </div>
+            <div class="i">
+                正确答案A，本题未作答
+            </div>
+        </div>
+        <div class="i4">
+            <div class="i">想要获取答案解析吗？</div>
+            <div class="i">扫码下载app，轻松获取哦</div>
+            <div style="text-align: center">
+                <img style="height:180px;" src="down.png">
+            </div>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        // var id = util.query('id');
+        // $.post("http://localhost:8080/exam-admin/exam/exercisecontent/info/" + id, function (data) {
+        //     if (data.code == 0) {
+        //         console.log(data);
+
+        //         // $("#title").text(data.newMsg.msgName);
+        //         // $(".ic").append(data.newMsg.msgContent);
+        //     }
+        // });
+        var data = { "msg": "success", "code": 0, "exerciseContent": { "id": 1768, "exerciseTypeId": 7, "sectionId": 238, "exerciseContent": "26.在WORD中，不能操作实现的是:(  )", "optionss": "在页眉中插入曰期;建立奇偶内容不同的页眉;在页眉中插入分页符;在页眉中插入剪贴画", "rightAnswer": "C", "answerAnalysis": "在word操作中，不能在页眉中插入分页符。在普通视图下，分页符是一条虚线。又称为自动分页符。在页面视图下，分页符是一条黑灰色宽线，鼠标指向单击后，变成一条黑线。分页符最简单的插入方式是直接按下。", "score": 2, "exerciseContentPicture": "", "remark": "", "seq": 17680, "exerciseOptionPicture": "", "exerciseAnswerPicture": "", "createDate": null, "updateTime": null, "courseName": null, "sectionName": null, "chapterName": null, "exerciseName": null } };
+        var exerciseContent = data.exerciseContent;
+        console.log(exerciseContent);
+
+
+    </script>
+</body>
+
+</html>
+

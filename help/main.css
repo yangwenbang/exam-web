@@ -1,0 +1,79 @@
+body {
+    margin: 0;
+}
+
+.bg {
+    background-image: url('timg.jpg');
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
+
+.bg .i {
+    display: none;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 20px;
+    color: rgb(138, 104, 93);
+    font-family: 'microsoft yahei';
+}
+
+.bg .f {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    color: #000;
+}
+
+.bg .f .i0 {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.bg .f .ii {
+    margin-bottom: 60px;
+}
+
+.bg .f .ii img {
+    width: 150px;
+    height: 150px;
+}
+
+.bg .f .i1 {
+    height: 30px;
+    font-size: 14px;
+}
+
+.bg .f .i2 {
+    height: 28px;
+    font-size: 12px;
+}
+
+.bg1 {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.bg1 .i {
+    font-size: 18px;
+    color: #323232;
+    font-weight: bold;
+    margin: 20px 20px 20px 20px;
+    text-align: center;
+}
+
+.bg1 .ic {
+    text-align: left;
+    font-size: 16px;
+    color: #646464;
+    overflow-y: auto;
+    margin: 20px 20px 20px 20px;
+}
+
+.bg1 .ic img {
+    max-width: 100%;
+}

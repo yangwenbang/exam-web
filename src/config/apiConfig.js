@@ -8,6 +8,7 @@ module.exports.api = {
         list: '/exam-admin/sys/user/list/condition',
         info: '/exam-admin/sys/user/info',
         save: '/exam-admin/sys/user/save/user',
+        okOrgan: '/exam-admin/exam/userdetail/link/organization',
         savestatus: "/exam-admin/sys/user/save/status",
         teacherlist: '/exam-admin/exam/teacher/list/condition'
     },
@@ -140,5 +141,11 @@ module.exports.api = {
         modellist: '/exam-admin/exam/exercisetype/model/list/condition',
         modeldel: '/exam-admin/exam/exercisetype/model/delete',
         modelall: '/exam-admin/exam/exercisetype/model/list/all'
+    },
+    version: {
+        list: '/exam-admin/exam/equipmentmanager/list/condition',
+        info: '/exam-admin/exam/equipmentmanager/info',
+        save: '/exam-admin/exam/equipmentmanager/save',
+        delete: '/exam-admin/exam/equipmentmanager/delete'
     }
 }

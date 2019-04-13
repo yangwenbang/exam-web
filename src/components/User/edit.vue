@@ -26,6 +26,26 @@
             </div>
             <div class="i">
               <div class="tl">
+                <span>用户类型：</span>
+              </div>
+              <div class="tr">
+                <el-select
+                  el="select"
+                  v-model="user.userType"
+                  clearable
+                  placeholder="请选择用户类型"
+                >
+                  <el-option
+                    v-for="item in userTypes"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </div>
+            </div>
+            <div class="i">
+              <div class="tl">
                 <span>所属部门：</span>
               </div>
               <div class="tr">
@@ -96,7 +116,7 @@
         </div>
       </div>
     </div>
-    <el-dialog :visible.sync="selectdeptVisable" width="30%" center title="部门选择">
+    <el-dialog :visible.sync="selectdeptVisable" width="500PX" center title="部门选择">
       <div style="margin-bottom:5px;font-size:15px;">请选择部门</div>
       <div style="border:solid 1px #ddd;padding:10px;">
         <el-tree :data="depts" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
@@ -138,7 +158,13 @@ export default {
       defaultProps: {
         children: "nodes",
         label: "name"
-      }
+      },
+      userTypes: [
+        { id: 0, label: "默认用户" },
+        { id: 1, label: "合作伙伴" },
+        { id: 2, label: "系统用户" },
+        { id: 3, label: "管理员" }
+      ]
     };
   },
   created() {
@@ -189,7 +215,8 @@ export default {
           var bitem = util.clone(element);
           that.srcdepts.push(bitem);
         });
-        that.depts = listToTree("deptId", "parentId", rdata);
+        //  listfpToTree("deptId", "parentId", rdata);
+        that.depts = listfpToTree("deptId", "parentId", rdata);
       });
     },
     handleNodeClick(data) {

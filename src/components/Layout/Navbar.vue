@@ -72,7 +72,7 @@ export default {
     return {
       showVisable: false,
       webUserInfo: {},
-      title: "江西教师一考通",
+      title: "继续教育一考通",
       pwd: {
         password: "",
         newPassword: ""
@@ -146,7 +146,6 @@ a {
   height: 50px;
   width: 100%;
   color: #fff;
-  border-bottom: 2px solid #279c85;
   z-index: 2001;
 }
 
@@ -277,5 +276,26 @@ a {
 
 .user-c .login-ul .login-info {
   line-height: 30px;
+}
+@media screen and (max-width: 1400px) {
+  .header {
+    height: 40px;
+  }
+  .head-left {
+    height: 40px;
+    line-height: 40px;
+  }
+  .header span {
+    font-size: 13px;
+  }
+  .head-icon {
+    width: 22px;
+    height: 22px;
+  }
+  .h-r-list .h-r-nav {
+    font-size: 13px;
+    height: 40px;
+    line-height: 40px;
+  }
 }
 </style>

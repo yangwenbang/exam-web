@@ -55,7 +55,7 @@
           <div class="result-c">
             <table class="comTb">
               <tr>
-                <th>学科图片</th>
+                <!-- <th>学科图片</th> -->
                 <th>
                   <div class="ll">学科名称</div>
                 </th>
@@ -69,11 +69,11 @@
                 <th style="width:300px;">操作</th>
               </tr>
               <tr v-for="item in subjectlist" :key="item.id">
-                <td>
+                <!-- <td>
                   <div class="pi-c">
                     <img :src="item.subjectPicture" class="pi">
                   </div>
-                </td>
+                </td> -->
                 <td>
                   <div class="ll">{{item.subjectName}}</div>
                 </td>
@@ -105,7 +105,6 @@
         </div>
       </div>
     </div>
-
     <el-dialog title="编辑学科" :visible.sync="exerciseEditVisable" width="800px" center>
       <div class="panel">
         <div class="p-t p-t2">
@@ -135,14 +134,14 @@
               <input class="add-input" type="text" placeholder="请输入排序" v-model="subject.seq">
             </div>
           </div>
-          <div class="i" style="height: 120px;">
+          <!-- <div class="i" style="height: 120px;">
             <div class="tl">
               <span>学科图片：</span>
             </div>
             <div class="tr">
               <fileUpload ref="fileUpload" :imgPath="subject.subjectPicture"></fileUpload>
             </div>
-          </div>
+          </div> -->
           <div class="i">
             <div class="tl">
               <span>学科描述：</span>
@@ -156,7 +155,7 @@
               >
             </div>
           </div>
-          <div class="i" style="text-align: center;">
+          <div class="pf">
             <button class="btn" @click="save">保存</button>
           </div>
         </div>

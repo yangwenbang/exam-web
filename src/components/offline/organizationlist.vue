@@ -49,7 +49,13 @@
             <table class="comTb">
               <tr>
                 <th>
+                  <div>机构logo</div>
+                </th>
+                <th>
                   <div>机构名称</div>
+                </th>
+                <th>
+                  <div>机构码</div>
                 </th>
                 <th>
                   <div>所属项目</div>
@@ -66,7 +72,15 @@
               </tr>
               <tr v-for="item in offlineorganizationlist" :key="item.id">
                 <td>
+                  <div class="pi-c">
+                    <img :src="item.organizationPicture" class="pi">
+                  </div>
+                </td>
+                <td>
                   <div>{{item.organizationName}}</div>
+                </td>
+                <td>
+                  <div>{{item.organizationCode}}</div>
                 </td>
                 <td>
                   <span v-for="xitem in projectlist" :key="xitem.id">
@@ -89,6 +103,7 @@
                   </div>
                 </td>
                 <td>
+                  <span class="operate" @click="qrcode(item)">查看二维码</span>
                   <router-link tag="span" class="operate" :to="item.url">编辑</router-link>
                   <span class="operate" v-if="item.status==0" @click="update(item,1)">启用</span>
                   <span class="operate" v-if="item.status==1" @click="update(item,0)">失效</span>
@@ -104,7 +119,11 @@
         </div>
       </div>
     </div>
-    
+    <el-dialog title="机构二维码" :visible.sync="qrcodevisable" width="300px" center>
+      <div style="height:250px;" v-loading="hascreate">
+        <div style="margin-left:35px;" id="qrcode"></div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -122,6 +141,8 @@ export default {
   },
   data() {
     return {
+      qrcodevisable: false,
+      hascreate: false,
       exerciseEditVisable: false,
       showVisable: false,
       detailVisable: false,
@@ -151,6 +172,25 @@ export default {
     this.getCitys();
   },
   methods: {
+    qrcode(item) {
+      var that = this;
+      that.hascreate = true;
+      this.qrcodevisable = true;
+      setTimeout(function() {
+        var url =
+          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx96e00748bfc14aff&redirect_uri=http://www.jxjsykt.com/exam-admin/exam/userdetail/bind/user?orcode=" +
+          item.organizationCode +
+          "&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect";
+        $("#qrcode").html("");
+        $("#qrcode").qrcode({
+          render: "canvas",
+          width: 180,
+          height: 180,
+          text: url
+        });
+        that.hascreate = false;
+      }, 5000);
+    },
     getData(val) {
       var that = this;
       var param = that.searchData;
@@ -191,8 +231,6 @@ export default {
     save() {
       var that = this;
       var param = that.organization;
-      param.createTime = null;
-      param.updateTime = null;
       axios.post(api.api.offline.organization.save, param).then(response => {
         var rdata = response.data;
         if (rdata.code == 0) {
@@ -210,8 +248,6 @@ export default {
     update(item, status) {
       var that = this;
       var param = item;
-      param.createTime = null;
-      param.updateTime = null;
       param.status = status;
       axios.post(api.api.offline.organization.save, param).then(response => {
         var rdata = response.data;

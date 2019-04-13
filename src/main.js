@@ -10,7 +10,6 @@ import Export2Excel from '@/vendor/Export2Excel.js'
 Vue.config.productionTip = false
 axios.defaults.withCredentials = true
 
-
 //在main.js设置全局的请求次数，请求的间隙
 axios.defaults.retry = 2;
 axios.defaults.retryDelay = 1000;

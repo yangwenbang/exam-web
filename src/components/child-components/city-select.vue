@@ -165,13 +165,13 @@ export default {
 </script>
 <style>
 .iscity {
-  width: 793px;
+  width: 893px;
   position: relative;
   cursor: pointer;
 }
 .iscity .iin {
   border: solid 1px #aaa;
-  width: 793px;
+  width: 893px;
   height: 38px;
 }
 .iscity .iin .itips {

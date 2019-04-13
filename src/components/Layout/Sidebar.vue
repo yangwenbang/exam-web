@@ -4,8 +4,9 @@
       <div class="mp" v-for="(item ,index) in navList" v-bind:key="index">
         <div class="m" @click="openItem(item)">
           <img :src="item.imgpath" alt>
-          <span>{{item.name}}</span>
-          <i class="collapse-icon" :class="{ 'rotate': item.isCollapsed}"></i>
+          <span v-if="!item.url">{{item.name}}</span>
+          <router-link tag="span" v-else :to="item.url">{{item.name}}</router-link>
+          <i class="collapse-icon" v-if="item.children" :class="{ 'rotate': item.isCollapsed}"></i>
         </div>
         <div v-show="item.isCollapsed" class="collapse-item">
           <div class="mc" v-for="(sitem,sindex) in item.children" :key="sindex">
@@ -38,15 +39,15 @@ export default {
         {
           name: "系统首页",
           url: "",
-          isCollapsed: false,
           imgpath: require("../../assets/sy.png"),
-          children: [
-            {
-              name: "首页",
-              url: "/home",
-              isclick: false
-            }
-          ]
+          url: "/home"
+          // children: [
+          //   {
+          //     name: "首页",
+          //     url: "/home",
+          //     isclick: false
+          //   }
+          // ]
         },
         {
           name: "用户管理",
@@ -58,12 +59,12 @@ export default {
               name: "用户列表",
               url: "/userlist",
               isclick: false
-            },
-            {
-              name: "教师列表",
-              url: "/teacherlist",
-              isclick: false
             }
+            // {
+            //   name: "教师列表",
+            //   url: "/teacherlist",
+            //   isclick: false
+            // }
           ]
         },
         {
@@ -170,8 +171,14 @@ export default {
               isclick: false
             },
             {
-              name: "权限管理",
+              name: "菜单管理",
               url: "/sys/menu/list",
+              isclick: false
+            }
+            ,
+            {
+              name: "版本管理",
+              url: "/sys/version/list",
               isclick: false
             }
           ]
@@ -229,7 +236,7 @@ export default {
     };
   },
   created() {
-    this.currentItem = this.navList[0].children[0];
+    // this.currentItem = this.navList[0].children[0];
   },
   watch: {},
   methods: {
@@ -324,11 +331,14 @@ export default {
 
 @media screen and (max-width: 1450px) {
   .sidebar .m img {
-    margin-left: 25px;
+    margin-left: 16px;
   }
 
   .sidebar .m .ml {
     margin-left: 53px;
+  }
+  .sidebar .m span {
+    font-size: 13px;
   }
 }
 </style>

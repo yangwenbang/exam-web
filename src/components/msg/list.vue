@@ -11,15 +11,54 @@
           </div>
         </div>
         <div class="p-c">
-          <div class="ml" style="height: 60px;">
+          <div class="ml" style="height: 120px;">
             <div class="fl">
               <div class="fh">
                 <div class="fcl">
                   <div class="fci">
-                    <span class="ct">资讯名称:</span>
+                    <span class="ct">资讯标题:</span>
                   </div>
                   <div class="fca">
-                    <input class="cin" type="text" v-model="searchData.conditions.subjectName">
+                    <input class="cin" type="text" v-model="searchData.conditions.msgName">
+                  </div>
+                </div>
+              </div>
+              <div class="fh">
+                <div class="fcl">
+                  <div class="fci">
+                    <span class="ct">所属项目:</span>
+                  </div>
+                  <div class="fca">
+                    <el-select
+                      v-model="searchData.conditions.projectId"
+                      clearable
+                      placeholder="请选择"
+                      @change="projectChange"
+                    >
+                      <el-option
+                        v-for="item in projectlist"
+                        :key="item.id"
+                        :label="item.projectName"
+                        :value="item.id"
+                      ></el-option>
+                    </el-select>
+                  </div>
+                </div>
+              </div>
+              <div class="fh">
+                <div class="fcl">
+                  <div class="fci">
+                    <span class="ct">资讯类别:</span>
+                  </div>
+                  <div class="fca">
+                    <el-select v-model="searchData.conditions.msgType" clearable placeholder="请选择">
+                      <el-option
+                        v-for="item in pMsgTypes"
+                        :key="item.id"
+                        :label="item.typeName"
+                        :value="item.id"
+                      ></el-option>
+                    </el-select>
                   </div>
                 </div>
               </div>
@@ -50,9 +89,10 @@
               <tr>
                 <th>资讯标题</th>
                 <th>所属项目</th>
-                <th>资讯简介</th>
+                <th>资讯类别</th>
                 <th>发布人</th>
                 <th>发布时间</th>
+                <th>排序</th>
                 <th>
                   <div>是否有效</div>
                 </th>
@@ -65,9 +105,14 @@
                     <span v-if="item.projectId==xitem.id">{{xitem.projectName}}</span>
                   </span>
                 </td>
-                <td>{{item.oneWord}}</td>
+                <td>
+                  <span v-for="xitem in msgTypes" :key="xitem.id">
+                    <span v-if="item.msgTypeId==xitem.id">{{xitem.typeName}}</span>
+                  </span>
+                </td>
                 <td>{{item.publishUsername}}</td>
                 <td>{{item.publishDate}}</td>
+                <td>{{item.seq}}</td>
                 <td>
                   <div>
                     <span class="operate" v-if="item.effective==0">无效</span>
@@ -95,14 +140,14 @@
         <div v-html="advertisement.adDetail"></div>
       </div>
     </el-dialog>
-    <el-dialog title="提示" :visible.sync="delVisable" width="30%" center>
+    <!-- <el-dialog title="提示" :visible.sync="delVisable" width="30%" center>
       <span>{{msg}}</span>
       <span style="margin-left:20px;color:#0dbc5c;">{{type.subjectName}}</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="delVisable = false">取 消</el-button>
         <el-button type="primary" @click="delData">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 </template>
 <script>
@@ -125,7 +170,8 @@ export default {
       delVisable: false,
       loading: true,
       projectlist: [],
-      type: {},
+      pMsgTypes: [],
+      msgTypes: [],
       advertisement: {},
       adtypes: [
         { id: 0, value: "首页弹出图片广告" },
@@ -137,7 +183,10 @@ export default {
       newsMsgList: [],
       searchData: {
         conditions: {
-          sidx: "effective desc,publishDate",
+          projectId: null,
+          msgName: "",
+          msgType: null,
+          sidx: "seq,effective desc,publishDate",
           order: "desc"
         },
         page: {
@@ -152,12 +201,30 @@ export default {
     this.loading = false;
     this.getData(1);
     this.getProjects();
+    this.getTypes();
   },
   methods: {
+    getTypes() {
+      var that = this;
+      var url = api.api.msg.type.all;
+      axios.post(url).then(response => {
+        var rdata = response.data;
+        if (rdata.code == 0) {
+          that.msgTypes = rdata.list;
+        }
+      });
+    },
     getData(val) {
       var that = this;
-      var param = that.searchData;
       that.searchData.page.page = val;
+      var param = util.clone(that.searchData);
+      console.log(param.conditions.msgType);
+      if (param.conditions.msgType == "") {
+        param.conditions.msgType = null;
+      }
+      if (param.conditions.projectId == "") {
+        param.conditions.projectId = null;
+      }
       that.loading = true;
       axios.post(api.api.msg.list, param).then(response => {
         that.loading = false;
@@ -181,7 +248,20 @@ export default {
         }
       });
     },
-
+    projectChange() {
+      var that = this;
+      this.searchData.conditions.msgType = null;
+      this.pMsgTypes = [];
+      if (this.searchData.conditions.projectId != null) {
+        if (this.searchData.conditions.projectId !== "") {
+          this.msgTypes.forEach(item => {
+            if (item.projectId == this.searchData.conditions.projectId) {
+              that.pMsgTypes.push(item);
+            }
+          });
+        }
+      }
+    },
     update(item, effective) {
       var that = this;
       var param = item;

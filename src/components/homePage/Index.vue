@@ -6,7 +6,7 @@
     <div class="wrap">
       <div class="w-top">
         <ul class="w-top-ul">
-          <li class="w-top-list">
+          <router-link tag="li" class="w-top-list" to="/userlist">
             <div class="list-img w-icon icon-user"></div>
             <div class="list-c">
               <p>
@@ -16,7 +16,7 @@
                 <span class="list-ii">{{newData.usercount}}</span>
               </p>
             </div>
-          </li>
+          </router-link>
           <li class="w-top-list">
             <div class="list-img w-icon icon-equipment"></div>
             <div class="list-c">
@@ -334,11 +334,25 @@ export default {
     height: 30px;
     padding-top: 5px;
     padding-left: 10px;
-    font-size: 14px;
+    font-size: 12px;
+  }
+  .w-top-ul .w-top-list {
+    width: 180px;
+    height: 40px;
+    cursor: pointer;
+  }
+  .w-top-ul .w-top-list:hover {
+    border: solid 1px #31c3a6;
   }
   .w-bottom .w-b-ul .w-b-list {
-    width: 15%;
+    width: 12%;
     height: 130px;
+  }
+  .w-top-list .list-c .list-i {
+    font-size: 14px;
+  }
+  .w-top-list .list-c .list-ii {
+    font-size: 16px;
   }
   .w-b-ul .w-b-list .w-b-link {
     width: 100px;

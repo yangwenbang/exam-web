@@ -14,6 +14,16 @@
           </div>
         </div>
         <div class="p-c">
+          <div style="clear:both;"></div>
+          <div class="i" style="height: 100px;">
+            <div class="tl">
+              <span>机构logo：</span>
+            </div>
+            <div class="tr">
+              <fileUpload :imgPath="organization.organizationPicture" v-on:change="setImg"></fileUpload>
+            </div>
+          </div>
+          <div style="clear:both"></div>
           <div class="i">
             <div class="tl">
               <span>机构名称：</span>
@@ -115,9 +125,9 @@
               <input class="add-input" type="text" placeholder="请输入排序" v-model="organization.seq">
             </div>
           </div>
-          <div class="i" style="text-align: center;">
+          <div class="pf">
             <button class="btn" style="margin-right:30px;" @click="save">保存</button>
-            <el-button class="btn-primary" @click="goback">取消</el-button>
+            <button class="calbtn" @click="goback">取消</button>
           </div>
         </div>
       </div>
@@ -128,11 +138,13 @@
 import axios from "axios";
 import api from "../../config/apiConfig";
 import CitySelect from "@/components/child-components/city-select";
+import fileUpload from "@/components/child-components/upload-components/webupload";
 
 export default {
   name: "OfflineOrganizationEdit",
   components: {
-    CitySelect
+    CitySelect,
+    fileUpload
   },
   data() {
     return {
@@ -175,6 +187,9 @@ export default {
       this.organization.cityId = item.cityId;
       this.organization.provinceId = item.provinceId;
       console.log(this.organization);
+    },
+    setImg(urlpath) {
+      this.organization.organizationPicture = urlpath;
     },
     save() {
       var that = this;
