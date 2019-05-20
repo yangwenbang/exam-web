@@ -7,7 +7,6 @@ const IV = CryptoJS.enc.Utf8.parse('1234567890123456');
  * AES加密 ：字符串 key iv  返回base64 
  */
 export function Encrypt(word, keyStr, ivStr) {
-    debugger
   let key = KEY
   let iv = IV
 
@@ -31,7 +30,6 @@ export function Encrypt(word, keyStr, ivStr) {
  *
  */
 export function Decrypt(word, keyStr, ivStr) {
-    debugger
   let key  = KEY
   let iv = IV
 
