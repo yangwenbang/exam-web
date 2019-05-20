@@ -63,6 +63,7 @@
 import axios from "axios";
 import api from "../config/apiConfig";
 import utils from "@/vendor/utils.js";
+import {Decrypt,Encrypt} from "@/vendor/aes.js";
 
 export default {
   name: "Login",
@@ -131,6 +132,11 @@ export default {
       } else {
         this.hint = "";
       }
+      console.log("密码：" + data.upassword);
+      let encry =  Encrypt(data.upassword);
+      console.log("密码加密：" + encry);
+      console.log("密码解密：" + Decrypt(encry));
+
       console.log(api.api.user.login);
       axios.post(api.api.user.login, data).then(response => {
         that.isFocus = false;
